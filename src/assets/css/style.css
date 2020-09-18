@@ -1,0 +1,231 @@
+/* #doughnut-menu > canvas {
+  background: transparent center url("../img/england/ManchesterCity/ManchesterCity.svg");
+  background-size: 20%;
+  background-repeat: no-repeat;
+} */
+
+.table > tbody > tr > td {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.sb-avatar {
+  margin-right: 10px !important;
+}
+
+.react-select__control {
+  border: 2px solid rgba(30, 30, 47, 0.7) !important;
+  height: 100% !important;
+  background-color: transparent;
+}
+
+.react-select__control--is-disabled {
+  background-color: transparent !important;
+}
+
+.react-select.info {
+  height: 5em !important;
+}
+
+.react-select__placeholder {
+  font-size: 1em !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.react-select__single-value > span {
+  font-size: 1em !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* dropdownları drop ettikten sonraki menünün backgroundu*/
+.react-select__menu {
+  background-color: rgba(39, 41, 60, 0.9) !important;
+  border-radius: 4px !important;
+  max-height: 260px !important;
+}
+.react-select__menu-list {
+  max-height: 260px !important;
+}
+/* dropdownları drop ettikten sonraki her bir optionun backgroundu*/
+.react-select__option {
+  margin-top: 0 !important;
+  /* border-bottom: 2px solid rgba(30, 30, 47, 0.6) !important; */
+  font-size: 1em !important;
+  color: white !important;
+  padding-left: 0.5rem !important;
+}
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: rgba(30, 30, 47, 1) !important;
+}
+
+.rdrCalendarWrapper {
+  background-color: transparent !important;
+}
+.rdrDayNumber span,
+.rdrWeekDay,
+.rdrMonthPicker > select,
+.rdrYearPicker > select {
+  color: white !important;
+}
+
+.rdrDayPassive > span > span {
+  color: gray !important;
+}
+
+.rdrNextPrevButton {
+  background: transparent !important;
+}
+
+.rdrNextButton i {
+  border-color: transparent transparent transparent rgb(52, 255, 255) !important;
+}
+.rdrPprevButton i {
+  border-color: transparent rgb(52, 255, 255) transparent transparent !important;
+}
+
+.carousel__slider[role='listbox'] > div > ul > li {
+  width: 8.7% !important;
+}
+
+.small-chart {
+  margin-right: 30px;
+}
+
+@media (max-width: 991.98px) {
+  .stats-column {
+    margin: unset !important;
+    padding: unset !important;
+  }
+  .card-stats {
+    margin: unset !important;
+    padding: unset !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .navbar-responsive {
+    display: none;
+  }
+  .dash-stat {
+    display: none;
+  }
+}
+
+@media (min-width: 1200.1px) {
+  .graph-scroller {
+    overflow: auto;
+  }
+  .dash-stat {
+    display: block;
+  }
+}
+
+#header-shape-gradient {
+  --color-stop: #f12c06;
+  --color-bot: #faed34;
+}
+
+.color1 {
+  stop-color: green;
+}
+.color2 {
+  stop-color: yellow;
+}
+
+button[data-tour-elem='right-arrow'],
+button[data-tour-elem='left-arrow'] {
+  color: white;
+}
+
+div[data-tour-elem='controls'] {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.setup-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-button {
+  width: 2rem !important;
+  height: 2rem !important;
+  min-width: 2rem !important;
+}
+
+.progress {
+  margin: 15px;
+  height: 1.5rem !important;
+}
+
+.progress-bar {
+  padding: 10px;
+}
+
+.player-name {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 1em;
+  font-weight: bolder;
+  float: left !important;
+  margin: 0 !important;
+  padding-left: 10px;
+}
+
+@media (min-width: 992px) {
+  .player-name {
+    padding-left: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .player-name {
+    padding-left: 10px;
+  }
+}
+
+.button-container.training-plugin {
+  margin: 5px;
+}
+
+.reactour__close > svg > path {
+  fill: white !important;
+}
+.sweet-alert > .btn {
+  background: none !important;
+  border: none !important;
+}
+
+.selection-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.numbers.dash {
+  text-align: center !important;
+}
+
+@supports (-ms-ime-align: auto) {
+  table {
+    table-layout: fixed;
+  }
+  .battery_svg {
+    max-width: 22%;
+  }
+}
+
+.loader-inner {
+  margin-top: 5%;
+  display: inline-block;
+}
+
+/* .block-ui {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+
+.navbar {
+  width: 5% !important;
+}
