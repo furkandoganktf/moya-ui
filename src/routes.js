@@ -11,6 +11,7 @@ import RegularForms from 'views/forms/RegularForms.js';
 import Calendar from 'views/Calendar.js';
 import Widgets from 'views/Widgets.js';
 import Charts from 'views/Charts.js';
+import Test from 'views/Test.js';
 import Dashboard from 'views/Dashboard.js';
 import Buttons from 'views/components/Buttons.js';
 import SweetAlert from 'views/components/SweetAlert.js';
@@ -31,6 +32,13 @@ const routes = [
     name: 'Dashboard',
     icon: 'tim-icons icon-chart-pie-36',
     component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    icon: 'tim-icons icon-chart-pie-36',
+    component: Test,
     layout: '/admin',
   },
   {
@@ -262,6 +270,14 @@ const routes = [
     icon: 'tim-icons icon-time-alarm',
     component: Calendar,
     layout: '/admin',
+  },
+  {
+    path: '/login',
+    name: 'Log Out',
+    icon: 'fas fa-sign-out-alt',
+    mini: 'LO',
+    component: LoginPage,
+    layout: '/auth',
   },
 ];
 
