@@ -12,6 +12,8 @@ import Calendar from 'views/Calendar.js';
 import Widgets from 'views/Widgets.js';
 import Charts from 'views/Charts.js';
 import {UsersPage} from 'views/Users.js';
+import {BrandsPage} from 'views/Brands.js';
+import {SuppliersPage} from 'views/Suppliers.js';
 import Dashboard from 'views/Dashboard.js';
 import Buttons from 'views/components/Buttons.js';
 import SweetAlert from 'views/components/SweetAlert.js';
@@ -40,6 +42,20 @@ const routes = [
     name: 'Kullanıcılar',
     icon: 'tim-icons icon-chart-pie-36',
     component: UsersPage,
+    layout: '/admin',
+  },
+  {
+    path: '/suppliers',
+    name: 'Tedarikçiler',
+    icon: 'tim-icons icon-chart-pie-36',
+    component: SuppliersPage,
+    layout: '/admin',
+  },
+  {
+    path: '/brands',
+    name: 'Markalar',
+    icon: 'tim-icons icon-chart-pie-36',
+    component: BrandsPage,
     layout: '/admin',
   },
   {
