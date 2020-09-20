@@ -2,17 +2,7 @@ import {authHeader} from 'helpers';
 import {urlConstants} from 'constants/urlConstants';
 import handleResponse from 'services/handler';
 
-export const userService = {
-  login,
-  logout,
-  register,
-  getAll,
-  getById,
-  update,
-  delete: _delete,
-};
-
-async function login(username, password) {
+const login = async (username, password) => {
   const requestOptions = {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -27,68 +17,101 @@ async function login(username, password) {
   // store user details and jwt token in local storage to keep user logged in between page refreshes
   localStorage.setItem('user', JSON.stringify(user));
   return user;
-}
+};
 
-function logout() {
+const logout = () => {
   // remove user from local storage to log user out
   localStorage.removeItem('user');
-}
+};
 
-function getAll() {
+const getAll = async () => {
   const requestOptions = {
     method: 'GET',
     headers: authHeader(),
   };
 
-  return fetch(urlConstants.REQUEST_URL + '/users', requestOptions).then(
-    handleResponse,
+  const response = await fetch(
+    urlConstants.REQUEST_URL + '/users',
+    requestOptions,
   );
-}
+  const users = await handleResponse(response);
+  return users;
+};
 
-function getById(id) {
+const getById = async id => {
   const requestOptions = {
     method: 'GET',
     headers: authHeader(),
   };
 
-  return fetch(urlConstants.REQUEST_URL + `/users/${id}`, requestOptions).then(
-    handleResponse,
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/users/${id}`,
+    requestOptions,
   );
-}
+  const users = await handleResponse(response);
+  return users;
+};
 
-function register(user) {
+const register = async user => {
   const requestOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: {...authHeader(), 'Content-Type': 'application/json'},
     body: JSON.stringify(user),
   };
-  return fetch(
-    urlConstants.REQUEST_URL + '/users/register',
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/users/register`,
     requestOptions,
-  ).then(handleResponse);
-}
+  );
+  return handleResponse(response);
+};
 
-function update(user) {
+const update = async user => {
   const requestOptions = {
     method: 'PUT',
     headers: {...authHeader(), 'Content-Type': 'application/json'},
     body: JSON.stringify(user),
   };
 
-  return fetch(
+  const response = await fetch(
     urlConstants.REQUEST_URL + `/users/${user.id}`,
     requestOptions,
-  ).then(handleResponse);
-}
+  );
+  return handleResponse(response);
+};
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
+const _delete = async id => {
   const requestOptions = {
     method: 'DELETE',
     headers: authHeader(),
   };
 
-  return fetch(urlConstants.REQUEST_URL + `/users/${id}`, requestOptions).then(
-    handleResponse,
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/users/${id}`,
+    requestOptions,
   );
-}
+  return handleResponse(response);
+};
+
+export const getLogs = async () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/logs`,
+    requestOptions,
+  );
+  return handleResponse(response);
+};
+
+export const userService = {
+  login,
+  logout,
+  register,
+  getAll,
+  getById,
+  update,
+  delete: _delete,
+};

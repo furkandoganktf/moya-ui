@@ -11,7 +11,7 @@ import RegularForms from 'views/forms/RegularForms.js';
 import Calendar from 'views/Calendar.js';
 import Widgets from 'views/Widgets.js';
 import Charts from 'views/Charts.js';
-import Test from 'views/Test.js';
+import {UsersPage} from 'views/Users.js';
 import Dashboard from 'views/Dashboard.js';
 import Buttons from 'views/components/Buttons.js';
 import SweetAlert from 'views/components/SweetAlert.js';
@@ -25,6 +25,7 @@ import Timeline from 'views/pages/Timeline.js';
 import User from 'views/pages/User.js';
 import {LoginPage} from 'views/pages/Login.js';
 import Lock from 'views/pages/Lock.js';
+import Logs from 'views/Logs';
 
 const routes = [
   {
@@ -35,10 +36,17 @@ const routes = [
     layout: '/admin',
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
+    path: '/users',
+    name: 'Kullanıcılar',
     icon: 'tim-icons icon-chart-pie-36',
-    component: Test,
+    component: UsersPage,
+    layout: '/admin',
+  },
+  {
+    path: '/logs',
+    name: 'Loglar',
+    icon: 'tim-icons icon-chart-pie-36',
+    component: Logs,
     layout: '/admin',
   },
   {

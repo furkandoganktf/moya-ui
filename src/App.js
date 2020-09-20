@@ -21,7 +21,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/auth" render={props => <AuthLayout {...props} />} />
           <PrivateRoute path="/admin/" component={AdminLayout} />
-          <Redirect from="*" to="/admin/homepage" />
+          <Redirect from="*" to="/admin/dashboard" />
         </Switch>
       </Router>
     );
