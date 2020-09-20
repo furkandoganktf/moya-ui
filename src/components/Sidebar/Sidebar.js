@@ -2,12 +2,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
-// javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from 'perfect-scrollbar';
-
-// reactstrap components
 import {Nav, Collapse} from 'reactstrap';
-
 var ps;
 
 class Sidebar extends React.Component {
@@ -33,7 +29,7 @@ class Sidebar extends React.Component {
   };
   // this verifies if any of the collapses should be default opened on a rerender of this component
   // for example, on the refresh of the page,
-  // while on the src/views/forms/RegularForms.js - route /admin/regular-forms
+  // while on the src/views/forms/RegularForms.jsx - route /admin/regular-forms
   getCollapseInitialState(routes) {
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse && this.getCollapseInitialState(routes[i].views)) {
@@ -46,6 +42,7 @@ class Sidebar extends React.Component {
   }
   // this function creates the links and collapses that appear in the sidebar (left menu)
   createLinks = routes => {
+    const {rtlActive} = this.props;
     return routes.map((prop, key) => {
       if (prop.redirect) {
         return null;
@@ -70,23 +67,27 @@ class Sidebar extends React.Component {
               {prop.icon !== undefined ? (
                 <>
                   <i className={prop.icon} />
-                  <p>
-                    {prop.name}
+                  <p style={{fontSize: '0.750rem', fontWeight: 'bold'}}>
+                    {rtlActive ? prop.rtlName : prop.name}
                     <b className="caret" />
                   </p>
                 </>
               ) : (
                 <>
-                  <span className="sidebar-mini-icon">{prop.mini}</span>
+                  <span className="sidebar-mini-icon">
+                    {rtlActive ? prop.rtlMini : prop.mini}
+                  </span>
                   <span className="sidebar-normal">
-                    {prop.name}
+                    {rtlActive ? prop.rtlName : prop.name}
                     <b className="caret" />
                   </span>
                 </>
               )}
             </a>
             <Collapse isOpen={this.state[prop.state]}>
-              <ul className="nav">{this.createLinks(prop.views)}</ul>
+              <ul className="nav" style={{marginLeft: '15px'}}>
+                {this.createLinks(prop.views)}
+              </ul>
             </Collapse>
           </li>
         );
@@ -100,13 +101,19 @@ class Sidebar extends React.Component {
           >
             {prop.icon !== undefined ? (
               <>
-                <i className={prop.icon} />
-                <p>{prop.name}</p>
+                <i className={prop.icon} style={{lineHeight: '30px'}} />
+                <p style={{fontSize: '0.750rem', fontWeight: 'bold'}}>
+                  {rtlActive ? prop.rtlName : prop.name}
+                </p>
               </>
             ) : (
               <>
-                <span className="sidebar-mini-icon">{prop.mini}</span>
-                <span className="sidebar-normal">{prop.name}</span>
+                <span className="sidebar-mini-icon">
+                  {rtlActive ? prop.rtlMini : prop.mini}
+                </span>
+                <span className="sidebar-normal">
+                  {rtlActive ? prop.rtlName : prop.name}
+                </span>
               </>
             )}
           </NavLink>
@@ -121,10 +128,7 @@ class Sidebar extends React.Component {
   componentDidMount() {
     // if you are using a Windows Machine, the scrollbars will have a Mac look
     if (navigator.platform.indexOf('Win') > -1) {
-      ps = new PerfectScrollbar(this.refs.sidebar, {
-        suppressScrollX: true,
-        suppressScrollY: false,
-      });
+      ps = new PerfectScrollbar(this.refs.sidebar);
     }
   }
   componentWillUnmount() {
@@ -148,7 +152,7 @@ class Sidebar extends React.Component {
             onClick={this.props.closeSidebar}
           >
             <div className="logo-img">
-              <img src={logo.imgSrc} alt="react-logo" />
+              <img src={logo.imgSrc} alt="react-logo" style={{width: '50px'}} />
             </div>
           </a>
         );
@@ -158,6 +162,7 @@ class Sidebar extends React.Component {
             className="simple-text logo-normal"
             target="_blank"
             onClick={this.props.closeSidebar}
+            style={{fontSize: '1rem', fontWeight: 'bold'}}
           >
             {logo.text}
           </a>
@@ -203,7 +208,7 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   activeColor: PropTypes.oneOf(['primary', 'blue', 'green', 'orange', 'red']),
-  Active: PropTypes.bool,
+  rtlActive: PropTypes.bool,
   routes: PropTypes.array.isRequired,
   logo: PropTypes.oneOfType([
     PropTypes.shape({

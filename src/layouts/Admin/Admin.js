@@ -116,6 +116,16 @@ class AdminLayout extends React.Component {
     document.documentElement.classList.remove('nav-open');
   };
 
+  handleMiniClick = () => {
+    if (document.body.classList.contains('sidebar-mini')) {
+      this.setState({sidebarMini: false});
+    } else {
+      this.setState({sidebarMini: true});
+    }
+    document.body.classList.toggle('sidebar-mini');
+    this.toggleSidebar();
+  };
+
   isSidebar = () => {
     return (
       <>

@@ -18,9 +18,9 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {supplierActions} from 'actions';
+import {productActions} from 'actions';
 
-class SuppliersPage extends React.Component {
+class BoxedProductsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
@@ -39,19 +39,19 @@ class SuppliersPage extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.props.suppliers.items && !this.state.dataLoaded) {
-      this.data = this.props.suppliers.items.suppliers.map((value, key) => {
+    if (this.props.products.items && !this.state.dataLoaded) {
+      this.data = this.props.products.items.products.map((value, key) => {
         return {
           id: value.id,
           name: value.name,
-          country: value.country,
+          country: value.stock,
           actions: (
             <div className="actions-right">
               {/* use this button to add a edit kind of action */}
               <Button
                 onClick={() => {
                   let obj = this.data.find(o => o.id === value.id);
-                  this.updateSupplierAlert(obj);
+                  this.updateProductAlert(obj);
                 }}
                 color="warning"
                 size="sm"
@@ -65,7 +65,7 @@ class SuppliersPage extends React.Component {
               <Button
                 onClick={() => {
                   let obj = this.data.find(o => o.id === value.id);
-                  this.deleteSupplierAlert(obj);
+                  this.deleteProductAlert(obj);
                 }}
                 color="danger"
                 size="sm"
@@ -89,10 +89,10 @@ class SuppliersPage extends React.Component {
     });
   };
 
-  addSupplier = async data => {
+  addProduct = async data => {
     this.hideAlert();
-    console.log(data)
-    await this.props.addSupplier(data);
+    console.log(data);
+    await this.props.addProduct(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -102,9 +102,9 @@ class SuppliersPage extends React.Component {
     }
   };
 
-  updateSupplier = async (data, supplier) => {
+  updateProduct = async (data, product) => {
     this.hideAlert();
-    await this.props.updateSupplier({...data, id: supplier.id});
+    await this.props.updateProduct({...data, id: product.id});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -114,9 +114,9 @@ class SuppliersPage extends React.Component {
     }
   };
 
-  deleteSupplier = async data => {
+  deleteProduct = async data => {
     this.hideAlert();
-    await this.props.deleteSupplier(data);
+    await this.props.deleteProduct(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -128,15 +128,15 @@ class SuppliersPage extends React.Component {
 
   onError = (errors, e) => console.log('error', errors, e);
 
-  deleteSupplierAlert = supplier => {
+  deleteProductAlert = product => {
     this.setState({
       alert: (
         <ReactBSAlert
           danger
           onCancel={this.hideAlert}
           showCancel={true}
-          onConfirm={() => this.deleteSupplier(supplier)}
-          title={supplier.name + ' isimli tedarikçiyi silmek istiyor musunuz?'}
+          onConfirm={() => this.deleteProduct(product)}
+          title={product.name + ' isimli ürünü silmek istiyor musunuz?'}
           confirmBtnText="Sil!"
           cancelBtnText="İptal"
           confirmBtnBsStyle="success"
@@ -146,7 +146,7 @@ class SuppliersPage extends React.Component {
     });
   };
 
-  updateSupplierAlert = supplier => {
+  updateProductAlert = product => {
     this.setState({
       alert: (
         <ReactBSAlert
@@ -157,32 +157,32 @@ class SuppliersPage extends React.Component {
           title=""
         >
           <CustomForm
-            name={'Tedarikçi Güncelleme'}
+            name={'Ürün Güncelleme'}
             submitText="Güncelle"
             forms={[
               {
-                label: 'Şirket adı*',
+                label: 'Kutulu Ürün Adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
                 rules: {
                   required: true,
                 },
-                defaultValue: supplier.name,
+                defaultValue: product.name,
               },
               {
-                label: 'Ülke*',
-                name: 'country',
+                label: 'Stok*',
+                name: 'stock',
                 type: 'input',
-                placeholder: 'Ülke',
+                placeholder: 'Stok',
                 rules: {
                   required: true,
                 },
-                defaultValue: supplier.country,
+                defaultValue: product.country,
               },
             ]}
             onCancel={this.hideAlert}
-            onSubmit={data => this.updateSupplier(data, supplier)}
+            onSubmit={data => this.updateProduct(data, product)}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -190,7 +190,7 @@ class SuppliersPage extends React.Component {
     });
   };
 
-  addSupplierAlert = () => {
+  addProductAlert = () => {
     this.setState({
       alert: (
         <ReactBSAlert
@@ -205,7 +205,7 @@ class SuppliersPage extends React.Component {
             submitText="Ekle"
             forms={[
               {
-                label: 'Şirket Adı*',
+                label: 'Kutulu Ürün Adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -215,10 +215,10 @@ class SuppliersPage extends React.Component {
                 defaultValue: '',
               },
               {
-                label: 'Ülke*',
-                name: 'country',
+                label: 'Stok*',
+                name: 'stock',
                 type: 'input',
-                placeholder: 'Ülke',
+                placeholder: 'Stok',
                 rules: {
                   required: true,
                 },
@@ -226,7 +226,7 @@ class SuppliersPage extends React.Component {
               },
             ]}
             onCancel={this.hideAlert}
-            onSubmit={this.addSupplier}
+            onSubmit={this.addProduct}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -260,7 +260,7 @@ class SuppliersPage extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking || this.props.suppliers.loading}
+        blocking={this.state.blocking || this.props.products.loading}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >
@@ -273,14 +273,14 @@ class SuppliersPage extends React.Component {
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
                 <CardTitle tag="h1" style={{textAlign: 'center'}}>
-                  Tedarikçiler
+                  Kutulu Ürünler
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
-                  onClick={this.addSupplierAlert}
+                  onClick={this.addProductAlert}
                 >
-                  Yeni Tedarikçi Ekle
+                  Yeni Ürün Ekle
                 </Button>
               </CardHeader>
               <CardBody>
@@ -290,13 +290,13 @@ class SuppliersPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Şirket Adı',
+                      Header: 'Kutulu Ürün Adı',
                       accessor: 'name',
                     },
 
                     {
-                      Header: 'Ülke',
-                      accessor: 'country',
+                      Header: 'Stok',
+                      accessor: 'stock',
                     },
                     {
                       Header: 'İşlemler',
@@ -327,17 +327,20 @@ class SuppliersPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, suppliers} = state;
+  const {alert, products} = state;
 
-  return {alert, suppliers};
+  return {alert, products};
 }
 
 const actionCreators = {
-  getAll: supplierActions.getAll,
-  addSupplier: supplierActions.add,
-  updateSupplier: supplierActions.update,
-  deleteSupplier: supplierActions.delete,
+  getAll: productActions.getAll,
+  addProduct: productActions.add,
+  updateProduct: productActions.update,
+  deleteProduct: productActions.delete,
 };
 
-const connectedSuppliersPage = connect(mapState, actionCreators)(SuppliersPage);
-export {connectedSuppliersPage as SuppliersPage};
+const connectedProductsPage = connect(
+  mapState,
+  actionCreators,
+)(BoxedProductsPage);
+export {connectedProductsPage as BoxedProductsPage};

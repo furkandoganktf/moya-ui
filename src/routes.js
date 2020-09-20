@@ -28,6 +28,9 @@ import User from 'views/pages/User.js';
 import {LoginPage} from 'views/pages/Login.js';
 import Lock from 'views/pages/Lock.js';
 import Logs from 'views/Logs';
+import {PackagesPage} from 'views/Packages';
+import {BoxedProductsPage} from 'views/Boxes';
+import {MaterialsPage} from 'views/Materials';
 
 const routes = [
   {
@@ -36,6 +39,35 @@ const routes = [
     icon: 'tim-icons icon-chart-pie-36',
     component: Dashboard,
     layout: '/admin',
+  },
+  {
+    collapse: true,
+    name: 'Mevcut Stok',
+    icon: 'tim-icons icon-image-02',
+    state: 'pagesCollapse',
+    views: [
+      {
+        path: '/boxed-products',
+        name: 'Kutulu Ürün',
+        mini: 'k.ü.',
+        component: BoxedProductsPage,
+        layout: '/admin',
+      },
+      {
+        path: '/materials',
+        name: 'Hammadde',
+        mini: 'ham.',
+        component: MaterialsPage,
+        layout: '/admin',
+      },
+      {
+        path: '/packages',
+        name: 'Ambalaj',
+        mini: 'a.',
+        component: PackagesPage,
+        layout: '/admin',
+      },
+    ],
   },
   {
     path: '/users',
@@ -53,7 +85,7 @@ const routes = [
   },
   {
     path: '/customers',
-    name: 'Müşterilar',
+    name: 'Müşteriler',
     icon: 'tim-icons icon-chart-pie-36',
     component: CustomersPage,
     layout: '/admin',
