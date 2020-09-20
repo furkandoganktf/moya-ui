@@ -12,7 +12,7 @@ import Calendar from 'views/Calendar.js';
 import Widgets from 'views/Widgets.js';
 import Charts from 'views/Charts.js';
 import {UsersPage} from 'views/Users.js';
-import {BrandsPage} from 'views/Brands.js';
+import {CustomersPage} from 'views/Customers.js';
 import {SuppliersPage} from 'views/Suppliers.js';
 import Dashboard from 'views/Dashboard.js';
 import Buttons from 'views/components/Buttons.js';
@@ -52,10 +52,10 @@ const routes = [
     layout: '/admin',
   },
   {
-    path: '/brands',
-    name: 'Markalar',
+    path: '/customers',
+    name: 'Müşterilar',
     icon: 'tim-icons icon-chart-pie-36',
-    component: BrandsPage,
+    component: CustomersPage,
     layout: '/admin',
   },
   {

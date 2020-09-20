@@ -9,11 +9,11 @@ const getAll = async () => {
   };
 
   const response = await fetch(
-    urlConstants.REQUEST_URL + '/brands',
+    urlConstants.REQUEST_URL + '/customers',
     requestOptions,
   );
-  const brands = await handleResponse(response);
-  return brands;
+  const customers = await handleResponse(response);
+  return customers;
 };
 
 const getById = async id => {
@@ -23,35 +23,35 @@ const getById = async id => {
   };
 
   const response = await fetch(
-    urlConstants.REQUEST_URL + `/brands/${id}`,
+    urlConstants.REQUEST_URL + `/customers/${id}`,
     requestOptions,
   );
-  const brands = await handleResponse(response);
-  return brands;
+  const customers = await handleResponse(response);
+  return customers;
 };
 
-const add = async brand => {
+const add = async customer => {
   const requestOptions = {
     method: 'POST',
     headers: {...authHeader(), 'Content-Type': 'application/json'},
-    body: JSON.stringify(brand),
+    body: JSON.stringify(customer),
   };
   const response = await fetch(
-    urlConstants.REQUEST_URL + `/brands`,
+    urlConstants.REQUEST_URL + `/customers`,
     requestOptions,
   );
   return handleResponse(response);
 };
 
-const update = async brand => {
+const update = async customer => {
   const requestOptions = {
     method: 'PUT',
     headers: {...authHeader(), 'Content-Type': 'application/json'},
-    body: JSON.stringify(brand),
+    body: JSON.stringify(customer),
   };
 
   const response = await fetch(
-    urlConstants.REQUEST_URL + `/brands/${brand.id}`,
+    urlConstants.REQUEST_URL + `/customers/${customer.id}`,
     requestOptions,
   );
   return handleResponse(response);
@@ -65,13 +65,13 @@ const _delete = async id => {
   };
 
   const response = await fetch(
-    urlConstants.REQUEST_URL + `/brands/${id}`,
+    urlConstants.REQUEST_URL + `/customers/${id}`,
     requestOptions,
   );
   return handleResponse(response);
 };
 
-export const brandService = {
+export const customerService = {
   add,
   getAll,
   getById,

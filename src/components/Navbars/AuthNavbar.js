@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 // reactstrap components
 import {
   Collapse,
-  NavbarBrand,
+  NavbarCustomer,
   Navbar,
   NavItem,
   Nav,
@@ -45,9 +45,9 @@ class AuthNavbar extends React.Component {
       >
         <Container fluid>
           <div className="navbar-wrapper">
-            <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
-              {this.props.brandText}
-            </NavbarBrand>
+            <NavbarCustomer href="#pablo" onClick={e => e.preventDefault()}>
+              {this.props.customerText}
+            </NavbarCustomer>
           </div>
           <button
             aria-controls="navigation-index"

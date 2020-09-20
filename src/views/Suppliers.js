@@ -44,8 +44,7 @@ class SuppliersPage extends React.Component {
         return {
           id: value.id,
           name: value.name,
-          surname: value.surname,
-          email: value.email,
+          country: value.country,
           actions: (
             <div className="actions-right">
               {/* use this button to add a edit kind of action */}
@@ -92,6 +91,7 @@ class SuppliersPage extends React.Component {
 
   addSupplier = async data => {
     this.hideAlert();
+    console.log(data)
     await this.props.addSupplier(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
@@ -136,7 +136,7 @@ class SuppliersPage extends React.Component {
           onCancel={this.hideAlert}
           showCancel={true}
           onConfirm={() => this.deleteSupplier(supplier)}
-          title={supplier.name + ' isimli kullanıcıyı silmek istiyor musunuz?'}
+          title={supplier.name + ' isimli Tedarikçiyı silmek istiyor musunuz?'}
           confirmBtnText="Sil!"
           cancelBtnText="İptal"
           confirmBtnBsStyle="success"
@@ -157,11 +157,11 @@ class SuppliersPage extends React.Component {
           title=""
         >
           <CustomForm
-            name={'Kullanıcı Güncelleme'}
+            name={'Tedarikçi Güncelleme'}
             submitText="Güncelle"
             forms={[
               {
-                label: 'Marka adı*',
+                label: 'Şirket adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -171,14 +171,14 @@ class SuppliersPage extends React.Component {
                 defaultValue: supplier.name,
               },
               {
-                label: 'Tedarikçi*',
-                name: 'email',
-                type: 'email',
-                placeholder: 'Email',
+                label: 'Ülke*',
+                name: 'country',
+                type: 'input',
+                placeholder: 'Ülke',
                 rules: {
                   required: true,
                 },
-                defaultValue: supplier.email,
+                defaultValue: supplier.country,
               },
             ]}
             onCancel={this.hideAlert}
@@ -205,7 +205,7 @@ class SuppliersPage extends React.Component {
             submitText="Ekle"
             forms={[
               {
-                label: 'İsim*',
+                label: 'Şirket Adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -215,44 +215,12 @@ class SuppliersPage extends React.Component {
                 defaultValue: '',
               },
               {
-                label: 'Soyisim*',
-                name: 'surname',
+                label: 'Ülke*',
+                name: 'country',
                 type: 'input',
-                placeholder: 'Soyisim',
+                placeholder: 'Ülke',
                 rules: {
                   required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'Email*',
-                name: 'email',
-                type: 'email',
-                placeholder: 'Email',
-                rules: {
-                  required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'Şifre*',
-                name: 'password',
-                type: 'password',
-                placeholder: 'Şifre',
-                rules: {
-                  required: true,
-                  minLength: 5,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'Şifre Tekrar*',
-                name: 'password-repeat',
-                type: 'password',
-                placeholder: 'Şifre Tekrar',
-                rules: {
-                  required: true,
-                  minLength: 5,
                 },
                 defaultValue: '',
               },
@@ -305,14 +273,14 @@ class SuppliersPage extends React.Component {
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
                 <CardTitle tag="h1" style={{textAlign: 'center'}}>
-                  Kullanıcılar
+                  Tedarikçiler
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
                   onClick={this.addSupplierAlert}
                 >
-                  Yeni Kullanıcı Ekle
+                  Yeni Tedarikçi Ekle
                 </Button>
               </CardHeader>
               <CardBody>
@@ -322,13 +290,13 @@ class SuppliersPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Marka Adı',
+                      Header: 'Şirket Adı',
                       accessor: 'name',
                     },
 
                     {
-                      Header: 'Email',
-                      accessor: 'email',
+                      Header: 'Ülke',
+                      accessor: 'country',
                     },
                     {
                       Header: 'İşlemler',

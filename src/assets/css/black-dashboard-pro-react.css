@@ -14,7 +14,7 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-/*     brand Colors              */
+/*     customer Colors              */
 /* navbar color */
 :root {
   --blue: #5e72e4;
@@ -4393,7 +4393,7 @@ input[type='button'].btn-block {
   justify-content: space-between;
 }
 
-.navbar-brand {
+.navbar-customer {
   display: inline-block;
   padding-top: 0.40681rem;
   padding-bottom: 0.40681rem;
@@ -4402,8 +4402,8 @@ input[type='button'].btn-block {
   line-height: inherit;
   white-space: nowrap;
 }
-.navbar-brand:hover,
-.navbar-brand:focus {
+.navbar-customer:hover,
+.navbar-customer:focus {
   text-decoration: none;
 }
 
@@ -4633,11 +4633,11 @@ input[type='button'].btn-block {
   display: none;
 }
 
-.navbar-light .navbar-brand {
+.navbar-light .navbar-customer {
   color: rgba(34, 42, 66, 0.9);
 }
-.navbar-light .navbar-brand:hover,
-.navbar-light .navbar-brand:focus {
+.navbar-light .navbar-customer:hover,
+.navbar-light .navbar-customer:focus {
   color: rgba(34, 42, 66, 0.9);
 }
 
@@ -4679,11 +4679,11 @@ input[type='button'].btn-block {
   color: rgba(34, 42, 66, 0.9);
 }
 
-.navbar-dark .navbar-brand {
+.navbar-dark .navbar-customer {
   color: rgba(255, 255, 255, 0.65);
 }
-.navbar-dark .navbar-brand:hover,
-.navbar-dark .navbar-brand:focus {
+.navbar-dark .navbar-customer:hover,
+.navbar-dark .navbar-customer:focus {
   color: rgba(255, 255, 255, 0.65);
 }
 
@@ -18469,7 +18469,7 @@ textarea.form-control:active {
   color: #222a42;
 }
 .navbar.bg-white .navbar-text,
-.navbar.bg-white .navbar-brand {
+.navbar.bg-white .navbar-customer {
   color: #222a42;
 }
 .navbar.bg-white .form-control {
@@ -18496,7 +18496,7 @@ textarea.form-control:active {
 .navbar.bg-danger {
   background-color: #fd5d93 !important;
 }
-.navbar .navbar-brand {
+.navbar .navbar-customer {
   position: relative;
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
@@ -31667,7 +31667,7 @@ Copyright (c) 2015 Daniel Eden
 .white-content {
   background: #f5f6fa;
 }
-.white-content .navbar.navbar-transparent .navbar-brand {
+.white-content .navbar.navbar-transparent .navbar-customer {
   color: #1d253b;
 }
 .white-content .navbar.navbar-transparent .navbar-toggler-bar {
@@ -38819,12 +38819,12 @@ a.react-tagsinput .react-tagsinput-tag.neutral.focus {
   padding-right: 15px;
   padding-left: 15px;
 }
-.rtl-active .navbar-brand {
+.rtl-active .navbar-customer {
   float: right;
 }
 @media (min-width: 768px) {
-  .rtl-active .navbar > .container .navbar-brand,
-  .rtl-active .navbar > .container-fluid .navbar-brand {
+  .rtl-active .navbar > .container .navbar-customer,
+  .rtl-active .navbar > .container-fluid .navbar-customer {
     margin-right: -15px;
     margin-left: auto;
   }

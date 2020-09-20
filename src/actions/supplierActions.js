@@ -19,7 +19,7 @@ const add = supplier => {
     await supplierService.add(supplier).then(
       () => {
         dispatch(success(supplierConstants.ADD_SUCCESS, supplier));
-        dispatch(alertActions.success('Kullanıcı Başarıyla Eklendi'));
+        dispatch(alertActions.success('Tedarikçi Başarıyla Eklendi'));
       },
       error => {
         dispatch(failure(supplierConstants.ADD_FAILURE, error));
@@ -47,7 +47,7 @@ const _delete = supplier => {
     await supplierService.delete(supplier.id).then(
       () => {
         dispatch(success(supplierConstants.DELETE_SUCCESS, supplier));
-        dispatch(alertActions.success('Kullanıcı başarıyla silindi'));
+        dispatch(alertActions.success('Tedarikçi başarıyla silindi'));
       },
       error => {
         dispatch(failure(supplierConstants.DELETE_FAILURE, error));
@@ -64,7 +64,7 @@ const update = supplier => {
     await supplierService.update(supplier).then(
       () => {
         dispatch(success(supplierConstants.UPDATE_SUCCESS, supplier));
-        dispatch(alertActions.success('Kullanıcı başarıyla güncellendi'));
+        dispatch(alertActions.success('Tedarikçi başarıyla güncellendi'));
       },
       error => {
         dispatch(failure(supplierConstants.UPDATE_FAILURE, error));
