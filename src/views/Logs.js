@@ -14,7 +14,7 @@ class Logs extends React.Component {
     this.data = [];
     this.state = {
       alert: null,
-      blocking: true,
+      dataLoaded: false,
       loaderType: 'ball-triangle-path',
       message: 'Loading, please wait',
     };
@@ -25,6 +25,7 @@ class Logs extends React.Component {
     this.data = data.logs;
     this.setState({
       blocking: false,
+      dataLoaded:true
     });
   };
 
@@ -33,7 +34,7 @@ class Logs extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking}
+        blocking={!this.state.dataLoaded}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >
@@ -72,7 +73,7 @@ class Logs extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
-                  defaultPageSize={7}
+                  defaultPageSize={10}
                   className="-striped -highlight"
                   loading={false}
                   nextText="İleri"

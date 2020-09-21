@@ -27,7 +27,6 @@ class SuppliersPage extends React.Component {
     this.state = {
       dataLoaded: false,
       alert: null,
-      blocking: false,
       loaderType: 'ball-triangle-path',
       message: 'Loading, please wait',
     };
@@ -260,7 +259,7 @@ class SuppliersPage extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking || this.props.suppliers.loading}
+        blocking={!this.state.dataLoaded}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >

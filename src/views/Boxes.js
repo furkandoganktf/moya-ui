@@ -37,6 +37,7 @@ class BoxedProductsPage extends React.Component {
 
   componentDidMount = async () => {
     await this.props.getSuppliers();
+    await this.props.getBrands();
     await this.props.getAll();
   };
 
