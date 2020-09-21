@@ -30,11 +30,11 @@ const add = supplier => {
 };
 
 const getAll = () => {
-  return dispatch => {
+  return async dispatch => {
     dispatch(request(supplierConstants.GETALL_REQUEST));
-
-    supplierService.getAll().then(
-      suppliers => dispatch(success(supplierConstants.GETALL_SUCCESS, suppliers)),
+    await supplierService.getAll().then(
+      suppliers =>
+        dispatch(success(supplierConstants.GETALL_SUCCESS, suppliers)),
       error => dispatch(failure(supplierConstants.GETALL_FAILURE, error)),
     );
   };

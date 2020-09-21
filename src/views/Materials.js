@@ -18,12 +18,12 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {productActions} from 'actions';
-
+import {productActions, supplierActions} from 'actions';
 class MaterialsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
+    this.suppliers = [];
     this.state = {
       dataLoaded: false,
       alert: null,
@@ -34,51 +34,61 @@ class MaterialsPage extends React.Component {
     this.notificationAlertRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.props.getAll();
+  componentDidMount = async () => {
+    await this.props.getSuppliers();
+    this.suppliers = this.props.suppliers.items.suppliers;
+    await this.props.getAll();
   };
 
   componentDidUpdate() {
-    if (this.props.products.items && !this.state.dataLoaded) {
-      this.data = this.props.products.items.products.map((value, key) => {
-        return {
-          id: value.id,
-          name: value.name,
-          stock: value.stock,
-          actions: (
-            <div className="actions-right">
-              {/* use this button to add a edit kind of action */}
-              <Button
-                onClick={() => {
-                  let obj = this.data.find(o => o.id === value.id);
-                  this.updateProductAlert(obj);
-                }}
-                color="warning"
-                size="sm"
-                className={classNames('btn-icon btn-link like', {
-                  'btn-neutral': key < 5,
-                })}
-              >
-                <i className="tim-icons icon-pencil" />
-              </Button>{' '}
-              {/* use this button to remove the data row */}
-              <Button
-                onClick={() => {
-                  let obj = this.data.find(o => o.id === value.id);
-                  this.deleteProductAlert(obj);
-                }}
-                color="danger"
-                size="sm"
-                className={classNames('btn-icon btn-link like', {
-                  'btn-neutral': key < 5,
-                })}
-              >
-                <i className="tim-icons icon-simple-remove" />
-              </Button>{' '}
-            </div>
-          ),
-        };
-      });
+    if (
+      this.props.suppliers.items &&
+      this.props.products.items &&
+      !this.state.dataLoaded
+    ) {
+      this.suppliers = this.props.suppliers.items.suppliers;
+      this.data = this.props.products.items.products
+        .filter(o => o.type === 'material')
+        .map((value, key) => {
+          return {
+            id: value.id,
+            name: value.name,
+            supplier: this.suppliers.find(o => o.id === value.supplier).name,
+            stock: value.stock,
+            actions: (
+              <div className="actions-right">
+                {/* use this button to add a edit kind of action */}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj);
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-pencil" />
+                </Button>{' '}
+                {/* use this button to remove the data row */}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.deleteProductAlert(obj);
+                  }}
+                  color="danger"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-remove" />
+                </Button>{' '}
+              </div>
+            ),
+          };
+        });
       this.setState({dataLoaded: true});
     }
   }
@@ -91,8 +101,11 @@ class MaterialsPage extends React.Component {
 
   addProduct = async data => {
     this.hideAlert();
-    console.log(data)
-    await this.props.addProduct(data);
+    await this.props.addProduct({
+      ...data,
+      supplier: data.supplier.value,
+      type: 'material',
+    });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -104,7 +117,12 @@ class MaterialsPage extends React.Component {
 
   updateProduct = async (data, product) => {
     this.hideAlert();
-    await this.props.updateProduct({...data, id: product.id});
+    await this.props.updateProduct({
+      ...data,
+      id: product.id,
+      supplier: data.supplier.value,
+      type: 'material',
+    });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -147,6 +165,7 @@ class MaterialsPage extends React.Component {
   };
 
   updateProductAlert = product => {
+    const defaultValue = this.suppliers.find(o => o.name === product.supplier);
     this.setState({
       alert: (
         <ReactBSAlert
@@ -171,6 +190,20 @@ class MaterialsPage extends React.Component {
                 defaultValue: product.name,
               },
               {
+                label: 'Tedarikçi*',
+                name: 'supplier',
+                type: 'select',
+                placeholder: 'Tedarikçi',
+                rules: {
+                  required: true,
+                },
+                defaultValue: {
+                  value: defaultValue.id,
+                  label: defaultValue.name,
+                },
+                data: this.suppliers,
+              },
+              {
                 label: 'Stok*',
                 name: 'stock',
                 type: 'input',
@@ -178,7 +211,7 @@ class MaterialsPage extends React.Component {
                 rules: {
                   required: true,
                 },
-                defaultValue: product.country,
+                defaultValue: product.stock,
               },
             ]}
             onCancel={this.hideAlert}
@@ -213,6 +246,17 @@ class MaterialsPage extends React.Component {
                   required: true,
                 },
                 defaultValue: '',
+              },
+              {
+                label: 'Tedarikçi*',
+                name: 'supplier',
+                type: 'select',
+                placeholder: 'Tedarikçi',
+                rules: {
+                  required: true,
+                },
+                defaultValue: '',
+                data: this.suppliers,
               },
               {
                 label: 'Stok*',
@@ -293,7 +337,10 @@ class MaterialsPage extends React.Component {
                       Header: 'Hammadde Adı',
                       accessor: 'name',
                     },
-
+                    {
+                      Header: 'TEDARİKÇİ',
+                      accessor: 'supplier',
+                    },
                     {
                       Header: 'Stok',
                       accessor: 'stock',
@@ -327,13 +374,14 @@ class MaterialsPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, products} = state;
+  const {alert, products, suppliers} = state;
 
-  return {alert, products};
+  return {alert, products, suppliers};
 }
 
 const actionCreators = {
   getAll: productActions.getAll,
+  getSuppliers: supplierActions.getAll,
   addProduct: productActions.add,
   updateProduct: productActions.update,
   deleteProduct: productActions.delete,

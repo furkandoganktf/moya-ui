@@ -18,12 +18,13 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {productActions} from 'actions';
+import {productActions, supplierActions} from 'actions';
 
 class BoxedProductsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
+    this.suppliers = [];
     this.state = {
       dataLoaded: false,
       alert: null,
@@ -34,51 +35,59 @@ class BoxedProductsPage extends React.Component {
     this.notificationAlertRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.props.getAll();
+  componentDidMount = async () => {
+    await this.props.getSuppliers();
+    await this.props.getAll();
   };
 
   componentDidUpdate() {
-    if (this.props.products.items && !this.state.dataLoaded) {
-      this.data = this.props.products.items.products.map((value, key) => {
-        return {
-          id: value.id,
-          name: value.name,
-          country: value.stock,
-          actions: (
-            <div className="actions-right">
-              {/* use this button to add a edit kind of action */}
-              <Button
-                onClick={() => {
-                  let obj = this.data.find(o => o.id === value.id);
-                  this.updateProductAlert(obj);
-                }}
-                color="warning"
-                size="sm"
-                className={classNames('btn-icon btn-link like', {
-                  'btn-neutral': key < 5,
-                })}
-              >
-                <i className="tim-icons icon-pencil" />
-              </Button>{' '}
-              {/* use this button to remove the data row */}
-              <Button
-                onClick={() => {
-                  let obj = this.data.find(o => o.id === value.id);
-                  this.deleteProductAlert(obj);
-                }}
-                color="danger"
-                size="sm"
-                className={classNames('btn-icon btn-link like', {
-                  'btn-neutral': key < 5,
-                })}
-              >
-                <i className="tim-icons icon-simple-remove" />
-              </Button>{' '}
-            </div>
-          ),
-        };
-      });
+    if (
+      this.props.suppliers.items &&
+      this.props.products.items &&
+      !this.state.dataLoaded
+    ) {
+      this.suppliers = this.props.suppliers.items.suppliers;
+      this.data = this.props.products.items.products
+        .filter(o => o.type === 'box')
+        .map((value, key) => {
+          return {
+            id: value.id,
+            name: value.name,
+            country: value.stock,
+            actions: (
+              <div className="actions-right">
+                {/* use this button to add a edit kind of action */}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj);
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-pencil" />
+                </Button>{' '}
+                {/* use this button to remove the data row */}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.deleteProductAlert(obj);
+                  }}
+                  color="danger"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-remove" />
+                </Button>{' '}
+              </div>
+            ),
+          };
+        });
       this.setState({dataLoaded: true});
     }
   }
@@ -92,7 +101,7 @@ class BoxedProductsPage extends React.Component {
   addProduct = async data => {
     this.hideAlert();
     console.log(data);
-    await this.props.addProduct(data);
+    await this.props.addProduct({...data, type: 'box'});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -104,7 +113,7 @@ class BoxedProductsPage extends React.Component {
 
   updateProduct = async (data, product) => {
     this.hideAlert();
-    await this.props.updateProduct({...data, id: product.id});
+    await this.props.updateProduct({...data, id: product.id, type: 'box'});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -159,6 +168,8 @@ class BoxedProductsPage extends React.Component {
           <CustomForm
             name={'Ürün Güncelleme'}
             submitText="Güncelle"
+            suppliers={this.suppliers}
+            products={this.props.products.items.products}
             forms={[
               {
                 label: 'Kutulu Ürün Adı*',
@@ -202,7 +213,10 @@ class BoxedProductsPage extends React.Component {
         >
           <CustomForm
             name={'Kayıt Formu'}
+            type="box"
             submitText="Ekle"
+            suppliers={this.suppliers}
+            products={this.props.products.items.products}
             forms={[
               {
                 label: 'Kutulu Ürün Adı*',
@@ -213,6 +227,26 @@ class BoxedProductsPage extends React.Component {
                   required: true,
                 },
                 defaultValue: '',
+              },
+              {
+                label: 'Hammadde Sayısı*',
+                name: 'materialCount',
+                type: 'number',
+                placeholder: 'Hammadde Sayısı',
+                rules: {
+                  required: true,
+                },
+                defaultValue: 0,
+              },
+              {
+                label: 'Ambalaj Sayısı*',
+                name: 'packageCount',
+                type: 'number',
+                placeholder: 'Ambalaj Sayısı',
+                rules: {
+                  required: true,
+                },
+                defaultValue: 0,
               },
               {
                 label: 'Stok*',
@@ -327,13 +361,14 @@ class BoxedProductsPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, products} = state;
+  const {alert, products, suppliers} = state;
 
-  return {alert, products};
+  return {alert, products, suppliers};
 }
 
 const actionCreators = {
   getAll: productActions.getAll,
+  getSuppliers: supplierActions.getAll,
   addProduct: productActions.add,
   updateProduct: productActions.update,
   deleteProduct: productActions.delete,

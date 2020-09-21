@@ -15,7 +15,6 @@ const failure = (type, error) => ({type: type, error});
 const add = product => {
   return async dispatch => {
     dispatch(request(productConstants.ADD_REQUEST, product));
-
     await productService.add(product).then(
       () => {
         dispatch(success(productConstants.ADD_SUCCESS, product));
@@ -30,10 +29,9 @@ const add = product => {
 };
 
 const getAll = () => {
-  return dispatch => {
+  return async dispatch => {
     dispatch(request(productConstants.GETALL_REQUEST));
-
-    productService.getAll().then(
+    await productService.getAll().then(
       products => dispatch(success(productConstants.GETALL_SUCCESS, products)),
       error => dispatch(failure(productConstants.GETALL_FAILURE, error)),
     );
