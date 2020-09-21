@@ -158,7 +158,7 @@ class CustomersPage extends React.Component {
             submitText="Güncelle"
             forms={[
               {
-                label: 'Firma Adi*',
+                label: 'Firma Adı*',
                 name: 'companyName',
                 type: 'input',
                 placeholder: 'Firma Adı',
@@ -252,7 +252,7 @@ class CustomersPage extends React.Component {
             submitText="Ekle"
             forms={[
               {
-                label: 'Firma Adi*',
+                label: 'Firma Adı*',
                 name: 'companyName',
                 type: 'input',
                 placeholder: 'Firma Adı',

@@ -290,7 +290,7 @@ class SuppliersPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Şirket Adı',
+                      Header: 'ŞİRKET Adı',
                       accessor: 'name',
                     },
 

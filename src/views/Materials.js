@@ -468,8 +468,8 @@ function mapState(state) {
 }
 
 const actionCreators = {
-  getAll: productActions.getAll,
   getSuppliers: supplierActions.getAll,
+  getAll: productActions.getAll,
   addProduct: productActions.add,
   updateProduct: productActions.update,
   deleteProduct: productActions.delete,

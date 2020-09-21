@@ -18,12 +18,13 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {brandActions} from 'actions';
+import {brandActions, supplierActions} from 'actions';
 
 class BrandsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
+    this.suppliers = [];
     this.state = {
       dataLoaded: false,
       alert: null,
@@ -34,17 +35,23 @@ class BrandsPage extends React.Component {
     this.notificationAlertRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.props.getAll();
+  componentDidMount = async () => {
+    await this.props.getSuppliers();
+    await this.props.getAll();
   };
 
   componentDidUpdate() {
-    if (this.props.brands.items && !this.state.dataLoaded) {
+    if (
+      this.props.suppliers.items &&
+      this.props.brands.items &&
+      !this.state.dataLoaded
+    ) {
+      this.suppliers = this.props.suppliers.items.suppliers;
       this.data = this.props.brands.items.brands.map((value, key) => {
         return {
           id: value.id,
           name: value.name,
-          country: value.country,
+          supplier: this.suppliers.find(o => o.id === value.supplier),
           actions: (
             <div className="actions-right">
               {/* use this button to add a edit kind of action */}
@@ -91,8 +98,10 @@ class BrandsPage extends React.Component {
 
   addBrand = async data => {
     this.hideAlert();
-    console.log(data)
-    await this.props.addBrand(data);
+    await this.props.addBrand({
+      ...data,
+      supplier: data.supplier[0].value,
+    });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -104,7 +113,11 @@ class BrandsPage extends React.Component {
 
   updateBrand = async (data, brand) => {
     this.hideAlert();
-    await this.props.updateBrand({...data, id: brand.id});
+    await this.props.updateBrand({
+      ...data,
+      supplier: data.supplier.value,
+      id: brand.id,
+    });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -147,6 +160,7 @@ class BrandsPage extends React.Component {
   };
 
   updateBrandAlert = brand => {
+    const defaultValue = brand.supplier;
     this.setState({
       alert: (
         <ReactBSAlert
@@ -161,7 +175,7 @@ class BrandsPage extends React.Component {
             submitText="Güncelle"
             forms={[
               {
-                label: 'Şirket adı*',
+                label: 'Marka adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -171,14 +185,18 @@ class BrandsPage extends React.Component {
                 defaultValue: brand.name,
               },
               {
-                label: 'Ülke*',
-                name: 'country',
-                type: 'input',
-                placeholder: 'Ülke',
+                label: 'Tedarikçi*',
+                name: 'supplier',
+                type: 'select',
+                placeholder: 'Tedarikçi',
                 rules: {
-                  required: true,
+                  required: false,
                 },
-                defaultValue: brand.country,
+                defaultValue: {
+                  value: defaultValue.id,
+                  label: defaultValue.name,
+                },
+                data: this.suppliers,
               },
             ]}
             onCancel={this.hideAlert}
@@ -205,7 +223,7 @@ class BrandsPage extends React.Component {
             submitText="Ekle"
             forms={[
               {
-                label: 'Şirket Adı*',
+                label: 'Marka Adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -215,14 +233,15 @@ class BrandsPage extends React.Component {
                 defaultValue: '',
               },
               {
-                label: 'Ülke*',
-                name: 'country',
-                type: 'input',
-                placeholder: 'Ülke',
+                label: 'Tedarikçi*',
+                name: 'supplier',
+                type: 'select',
+                placeholder: 'Tedarikçi',
                 rules: {
-                  required: true,
+                  required: false,
                 },
                 defaultValue: '',
+                data: this.suppliers,
               },
             ]}
             onCancel={this.hideAlert}
@@ -290,13 +309,12 @@ class BrandsPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Şirket Adı',
+                      Header: 'MARKA Adı',
                       accessor: 'name',
                     },
-
                     {
-                      Header: 'Ülke',
-                      accessor: 'country',
+                      Header: 'TEDARİKÇİ',
+                      accessor: 'supplier.name',
                     },
                     {
                       Header: 'İşlemler',
@@ -327,12 +345,13 @@ class BrandsPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, brands} = state;
+  const {alert, brands, suppliers} = state;
 
-  return {alert, brands};
+  return {alert, brands, suppliers};
 }
 
 const actionCreators = {
+  getSuppliers: supplierActions.getAll,
   getAll: brandActions.getAll,
   addBrand: brandActions.add,
   updateBrand: brandActions.update,

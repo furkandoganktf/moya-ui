@@ -1,32 +1,8 @@
-import VectorMap from 'views/maps/VectorMap.js';
-import GoogleMaps from 'views/maps/GoogleMaps.js';
-import FullScreenMap from 'views/maps/FullScreenMap.js';
-import ReactTables from 'views/tables/ReactTables.js';
-import RegularTables from 'views/tables/RegularTables.js';
-import ExtendedTables from 'views/tables/ExtendedTables.js';
-import Wizard from 'views/forms/Wizard.js';
-import ValidationForms from 'views/forms/ValidationForms.js';
-import ExtendedForms from 'views/forms/ExtendedForms.js';
-import RegularForms from 'views/forms/RegularForms.js';
-import Calendar from 'views/Calendar.js';
-import Widgets from 'views/Widgets.js';
-import Charts from 'views/Charts.js';
 import {UsersPage} from 'views/Users.js';
 import {CustomersPage} from 'views/Customers.js';
 import {SuppliersPage} from 'views/Suppliers.js';
-import Dashboard from 'views/Dashboard.js';
-import Buttons from 'views/components/Buttons.js';
-import SweetAlert from 'views/components/SweetAlert.js';
-import Notifications from 'views/components/Notifications.js';
-import Grid from 'views/components/Grid.js';
-import Typography from 'views/components/Typography.js';
-import Panels from 'views/components/Panels.js';
-import Icons from 'views/components/Icons.js';
-import Register from 'views/pages/Register.js';
-import Timeline from 'views/pages/Timeline.js';
-import User from 'views/pages/User.js';
-import {LoginPage} from 'views/pages/Login.js';
-import Lock from 'views/pages/Lock.js';
+import {BrandsPage} from 'views/Brands.js';
+import {LoginPage} from 'views/Login.js';
 import Logs from 'views/Logs';
 import {PackagesPage} from 'views/Packages';
 import {BoxedProductsPage} from 'views/Boxes';
@@ -34,16 +10,9 @@ import {MaterialsPage} from 'views/Materials';
 
 const routes = [
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    icon: 'tim-icons icon-chart-pie-36',
-    component: Dashboard,
-    layout: '/admin',
-  },
-  {
     collapse: true,
     name: 'Mevcut Stok',
-    icon: 'tim-icons icon-image-02',
+    icon: 'tim-icons icon-chart-pie-36',
     state: 'pagesCollapse',
     views: [
       {
@@ -70,261 +39,38 @@ const routes = [
     ],
   },
   {
-    path: '/users',
-    name: 'KULLANICILAR',
-    icon: 'tim-icons icon-chart-pie-36',
-    component: UsersPage,
+    path: '/brands',
+    name: 'MARKALAR',
+    icon: 'tim-icons icon-bag-16',
+    component: BrandsPage,
     layout: '/admin',
   },
   {
     path: '/suppliers',
     name: 'TEDARİKÇİLER',
-    icon: 'tim-icons icon-chart-pie-36',
+    icon: 'tim-icons icon-delivery-fast',
     component: SuppliersPage,
     layout: '/admin',
   },
   {
     path: '/customers',
     name: 'MÜŞTERİLER',
-    icon: 'tim-icons icon-chart-pie-36',
+    icon: 'tim-icons icon-bus-front-12',
     component: CustomersPage,
+    layout: '/admin',
+  },
+  {
+    path: '/users',
+    name: 'KULLANICILAR',
+    icon: 'tim-icons icon-book-bookmark',
+    component: UsersPage,
     layout: '/admin',
   },
   {
     path: '/logs',
     name: 'Loglar',
-    icon: 'tim-icons icon-chart-pie-36',
-    component: Logs,
-    layout: '/admin',
-  },
-  {
-    collapse: true,
-    name: 'Pages',
-    icon: 'tim-icons icon-image-02',
-    state: 'pagesCollapse',
-    views: [
-      {
-        path: '/timeline',
-        name: 'Timeline',
-        mini: 'T',
-        component: Timeline,
-        layout: '/admin',
-      },
-      {
-        path: '/login',
-        name: 'Login',
-        mini: 'L',
-        component: LoginPage,
-        layout: '/auth',
-      },
-      {
-        path: '/register',
-        name: 'Register',
-        mini: 'R',
-        component: Register,
-        layout: '/auth',
-      },
-      {
-        path: '/lock-screen',
-        name: 'Lock Screen',
-        mini: 'LS',
-        component: Lock,
-        layout: '/auth',
-      },
-      {
-        path: '/user-profile',
-        name: 'User Profile',
-        mini: 'UP',
-        component: User,
-        layout: '/admin',
-      },
-    ],
-  },
-  {
-    collapse: true,
-    name: 'Components',
-    icon: 'tim-icons icon-molecule-40',
-    state: 'componentsCollapse',
-    views: [
-      {
-        collapse: true,
-        name: 'Multi Level Collapse',
-        mini: 'MLT',
-        state: 'multiCollapse',
-        views: [
-          {
-            path: '/buttons',
-            name: 'Buttons',
-            mini: 'B',
-            component: Buttons,
-            layout: '/admin',
-          },
-        ],
-      },
-      {
-        path: '/buttons',
-        name: 'Buttons',
-        mini: 'B',
-        component: Buttons,
-        layout: '/admin',
-      },
-      {
-        path: '/grid-system',
-        name: 'Grid System',
-        mini: 'GS',
-        component: Grid,
-        layout: '/admin',
-      },
-      {
-        path: '/panels',
-        name: 'Panels',
-        mini: 'P',
-        component: Panels,
-        layout: '/admin',
-      },
-      {
-        path: '/sweet-alert',
-        name: 'Sweet Alert',
-        mini: 'SA',
-        component: SweetAlert,
-        layout: '/admin',
-      },
-      {
-        path: '/notifications',
-        name: 'Notifications',
-        mini: 'N',
-        component: Notifications,
-        layout: '/admin',
-      },
-      {
-        path: '/icons',
-        name: 'Icons',
-        mini: 'I',
-        component: Icons,
-        layout: '/admin',
-      },
-      {
-        path: '/typography',
-        name: 'Typography',
-        mini: 'T',
-        component: Typography,
-        layout: '/admin',
-      },
-    ],
-  },
-  {
-    collapse: true,
-    name: 'Forms',
     icon: 'tim-icons icon-notes',
-    state: 'formsCollapse',
-    views: [
-      {
-        path: '/regular-forms',
-        name: 'Regular Forms',
-        mini: 'RF',
-        component: RegularForms,
-        layout: '/admin',
-      },
-      {
-        path: '/extended-forms',
-        name: 'Extended Forms',
-        mini: 'EF',
-        component: ExtendedForms,
-        layout: '/admin',
-      },
-      {
-        path: '/validation-forms',
-        name: 'Validation Forms',
-        mini: 'VF',
-        component: ValidationForms,
-        layout: '/admin',
-      },
-      {
-        path: '/wizard',
-        name: 'Wizard',
-        mini: 'W',
-        component: Wizard,
-        layout: '/admin',
-      },
-    ],
-  },
-  {
-    collapse: true,
-    name: 'Tables',
-    icon: 'tim-icons icon-puzzle-10',
-    state: 'tablesCollapse',
-    views: [
-      {
-        path: '/regular-tables',
-        name: 'Regular Tables',
-        mini: 'RT',
-        component: RegularTables,
-        layout: '/admin',
-      },
-      {
-        path: '/extended-tables',
-        name: 'Extended Tables',
-        mini: 'ET',
-        component: ExtendedTables,
-        layout: '/admin',
-      },
-      {
-        path: '/react-tables',
-        name: 'React Tables',
-        mini: 'RT',
-        component: ReactTables,
-        layout: '/admin',
-      },
-    ],
-  },
-  {
-    collapse: true,
-    name: 'Maps',
-    icon: 'tim-icons icon-pin',
-    state: 'mapsCollapse',
-    views: [
-      {
-        path: '/google-maps',
-        name: 'Google Maps',
-        mini: 'GM',
-        component: GoogleMaps,
-        layout: '/admin',
-      },
-      {
-        path: '/full-screen-map',
-        name: 'Full Screen Map',
-        mini: 'FSM',
-        component: FullScreenMap,
-        layout: '/admin',
-      },
-      {
-        path: '/vector-map',
-        name: 'Vector Map',
-        mini: 'VM',
-        component: VectorMap,
-        layout: '/admin',
-      },
-    ],
-  },
-  {
-    path: '/widgets',
-    name: 'Widgets',
-    icon: 'tim-icons icon-settings',
-    component: Widgets,
-    layout: '/admin',
-  },
-  {
-    path: '/charts',
-    name: 'Charts',
-    icon: 'tim-icons icon-chart-bar-32',
-    component: Charts,
-    layout: '/admin',
-  },
-  {
-    path: '/calendar',
-    name: 'Calendar',
-    icon: 'tim-icons icon-time-alarm',
-    component: Calendar,
+    component: Logs,
     layout: '/admin',
   },
   {

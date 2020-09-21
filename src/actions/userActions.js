@@ -20,7 +20,7 @@ const login = (username, password) => {
     userService.login(username, password).then(
       user => {
         dispatch(success(userConstants.LOGIN_SUCCESS, user));
-        history.push('/admin/dashboard');
+        history.push('/admin/boxed-products');
       },
       error => {
         dispatch(failure(userConstants.LOGIN_FAILURE, error));
