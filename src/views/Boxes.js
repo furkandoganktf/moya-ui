@@ -28,7 +28,6 @@ class BoxedProductsPage extends React.Component {
     this.state = {
       dataLoaded: false,
       alert: null,
-      blocking: false,
       loaderType: 'ball-triangle-path',
       message: 'Loading, please wait',
     };
@@ -100,7 +99,6 @@ class BoxedProductsPage extends React.Component {
 
   addProduct = async data => {
     this.hideAlert();
-    console.log(data);
     await this.props.addProduct({...data, type: 'box'});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
@@ -294,7 +292,7 @@ class BoxedProductsPage extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking || this.props.products.loading}
+        blocking={!this.state.dataLoaded}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >

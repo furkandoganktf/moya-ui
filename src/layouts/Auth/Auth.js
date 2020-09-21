@@ -55,7 +55,6 @@ class AuthLayout extends React.Component {
   };
   componentDidMount() {
     document.documentElement.classList.remove('nav-open');
-    localStorage.removeItem('training');
     localStorage.removeItem('user');
   }
   render() {

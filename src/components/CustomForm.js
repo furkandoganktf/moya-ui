@@ -112,6 +112,7 @@ export default function CustomForm(props) {
             </label>
             <Controller
               as={Select}
+              options={options}
               name={'package_' + (i + 1)}
               placeholder={'Ambalaj ' + (i + 1)}
               control={control}

@@ -4,6 +4,7 @@ import {users} from './usersReducer';
 import {alert} from './alertReducer';
 import {customers} from './customerReducer';
 import {suppliers} from './supplierReducer';
+import {brands} from './brandReducer';
 import {products} from './productReducer';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   alert,
   customers,
   suppliers,
+  brands,
   products,
 });
 

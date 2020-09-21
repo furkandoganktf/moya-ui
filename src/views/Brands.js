@@ -18,9 +18,9 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {customerActions} from 'actions';
+import {brandActions} from 'actions';
 
-class CustomersPage extends React.Component {
+class BrandsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
@@ -39,17 +39,19 @@ class CustomersPage extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.props.customers.items && !this.state.dataLoaded) {
-      this.data = this.props.customers.items.customers.map((value, key) => {
+    if (this.props.brands.items && !this.state.dataLoaded) {
+      this.data = this.props.brands.items.brands.map((value, key) => {
         return {
-          ...value,
+          id: value.id,
+          name: value.name,
+          country: value.country,
           actions: (
             <div className="actions-right">
               {/* use this button to add a edit kind of action */}
               <Button
                 onClick={() => {
                   let obj = this.data.find(o => o.id === value.id);
-                  this.updateCustomerAlert(obj);
+                  this.updateBrandAlert(obj);
                 }}
                 color="warning"
                 size="sm"
@@ -63,7 +65,7 @@ class CustomersPage extends React.Component {
               <Button
                 onClick={() => {
                   let obj = this.data.find(o => o.id === value.id);
-                  this.deleteCustomerAlert(obj);
+                  this.deleteBrandAlert(obj);
                 }}
                 color="danger"
                 size="sm"
@@ -87,9 +89,10 @@ class CustomersPage extends React.Component {
     });
   };
 
-  addCustomer = async data => {
+  addBrand = async data => {
     this.hideAlert();
-    await this.props.addCustomer(data);
+    console.log(data)
+    await this.props.addBrand(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -99,9 +102,9 @@ class CustomersPage extends React.Component {
     }
   };
 
-  updateCustomer = async (data, customer) => {
+  updateBrand = async (data, brand) => {
     this.hideAlert();
-    await this.props.updateCustomer({...data, id: customer.id});
+    await this.props.updateBrand({...data, id: brand.id});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -111,9 +114,9 @@ class CustomersPage extends React.Component {
     }
   };
 
-  deleteCustomer = async data => {
+  deleteBrand = async data => {
     this.hideAlert();
-    await this.props.deleteCustomer(data);
+    await this.props.deleteBrand(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -125,15 +128,15 @@ class CustomersPage extends React.Component {
 
   onError = (errors, e) => console.log('error', errors, e);
 
-  deleteCustomerAlert = customer => {
+  deleteBrandAlert = brand => {
     this.setState({
       alert: (
         <ReactBSAlert
           danger
           onCancel={this.hideAlert}
           showCancel={true}
-          onConfirm={() => this.deleteCustomer(customer)}
-          title={customer.name + ' isimli müşteriyi silmek istiyor musunuz?'}
+          onConfirm={() => this.deleteBrand(brand)}
+          title={brand.name + ' isimli markayı silmek istiyor musunuz?'}
           confirmBtnText="Sil!"
           cancelBtnText="İptal"
           confirmBtnBsStyle="success"
@@ -143,7 +146,7 @@ class CustomersPage extends React.Component {
     });
   };
 
-  updateCustomerAlert = customer => {
+  updateBrandAlert = brand => {
     this.setState({
       alert: (
         <ReactBSAlert
@@ -154,82 +157,32 @@ class CustomersPage extends React.Component {
           title=""
         >
           <CustomForm
-            name={'Müşteri Güncelleme'}
+            name={'Marka Güncelleme'}
             submitText="Güncelle"
             forms={[
               {
-                label: 'Firma Adi*',
-                name: 'companyName',
-                type: 'input',
-                placeholder: 'Firma Adı',
-                rules: {
-                  required: true,
-                },
-                defaultValue: customer.companyName,
-              },
-              {
-                label: 'İsim*',
+                label: 'Şirket adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
                 rules: {
                   required: true,
                 },
-                defaultValue: customer.name,
+                defaultValue: brand.name,
               },
               {
-                label: 'Soyisim*',
-                name: 'surname',
+                label: 'Ülke*',
+                name: 'country',
                 type: 'input',
-                placeholder: 'Soyisim',
+                placeholder: 'Ülke',
                 rules: {
                   required: true,
                 },
-                defaultValue: customer.surname,
-              },
-              {
-                label: 'İl*',
-                name: 'province',
-                type: 'input',
-                placeholder: 'İl',
-                rules: {
-                  required: true,
-                },
-                defaultValue: customer.province,
-              },
-              {
-                label: 'İlçe*',
-                name: 'district',
-                type: 'input',
-                placeholder: 'İlçe',
-                rules: {
-                  required: true,
-                },
-                defaultValue: customer.district,
-              },
-              {
-                label: 'Telefon*',
-                name: 'phone',
-                type: 'phone',
-                placeholder: 'Telefon',
-                rules: {
-                  required: true,
-                },
-                defaultValue: customer.phone,
-              },
-              {
-                label: 'Notlar',
-                name: 'notes',
-                type: 'input',
-                placeholder: 'Notlar',
-                rules: {
-                  required: false,
-                },
-                defaultValue: customer.notes,
+                defaultValue: brand.country,
               },
             ]}
             onCancel={this.hideAlert}
-            onSubmit={data => this.updateCustomer(data, customer)}
+            onSubmit={data => this.updateBrand(data, brand)}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -237,7 +190,7 @@ class CustomersPage extends React.Component {
     });
   };
 
-  addCustomerAlert = () => {
+  addBrandAlert = () => {
     this.setState({
       alert: (
         <ReactBSAlert
@@ -252,17 +205,7 @@ class CustomersPage extends React.Component {
             submitText="Ekle"
             forms={[
               {
-                label: 'Firma Adi*',
-                name: 'companyName',
-                type: 'input',
-                placeholder: 'Firma Adı',
-                rules: {
-                  required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'İsim*',
+                label: 'Şirket Adı*',
                 name: 'name',
                 type: 'input',
                 placeholder: 'İsim',
@@ -272,58 +215,18 @@ class CustomersPage extends React.Component {
                 defaultValue: '',
               },
               {
-                label: 'Soyisim*',
-                name: 'surname',
+                label: 'Ülke*',
+                name: 'country',
                 type: 'input',
-                placeholder: 'Soyisim',
+                placeholder: 'Ülke',
                 rules: {
                   required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'İl*',
-                name: 'province',
-                type: 'input',
-                placeholder: 'İl',
-                rules: {
-                  required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'İlçe*',
-                name: 'district',
-                type: 'input',
-                placeholder: 'İlçe',
-                rules: {
-                  required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'Telefon*',
-                name: 'phone',
-                type: 'phone',
-                placeholder: 'Telefon',
-                rules: {
-                  required: true,
-                },
-                defaultValue: '',
-              },
-              {
-                label: 'Notlar',
-                name: 'notes',
-                type: 'input',
-                placeholder: 'Notlar',
-                rules: {
-                  required: false,
                 },
                 defaultValue: '',
               },
             ]}
             onCancel={this.hideAlert}
-            onSubmit={this.addCustomer}
+            onSubmit={this.addBrand}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -357,7 +260,7 @@ class CustomersPage extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking || this.props.customers.loading}
+        blocking={this.state.blocking || this.props.brands.loading}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >
@@ -370,14 +273,14 @@ class CustomersPage extends React.Component {
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
                 <CardTitle tag="h1" style={{textAlign: 'center'}}>
-                  Müşteriler
+                  Markalar
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
-                  onClick={this.addCustomerAlert}
+                  onClick={this.addBrandAlert}
                 >
-                  Yeni Müşteri Ekle
+                  Yeni Marka Ekle
                 </Button>
               </CardHeader>
               <CardBody>
@@ -387,34 +290,13 @@ class CustomersPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Firma Adı',
-                      accessor: 'companyName',
-                    },
-                    {
-                      Header: 'Ad',
+                      Header: 'Şirket Adı',
                       accessor: 'name',
                     },
+
                     {
-                      Header: 'Soyad',
-                      accessor: 'surname',
-                    },
-                    {
-                      Header: 'İl',
-                      accessor: 'province',
-                    },
-                    {
-                      Header: 'İlçe',
-                      accessor: 'district',
-                    },
-                    {
-                      Header: 'Telefon',
-                      accessor: 'phone',
-                    },
-                    {
-                      Header: 'Notlar',
-                      accessor: 'notes',
-                      sortable: false,
-                      filterable: false,
+                      Header: 'Ülke',
+                      accessor: 'country',
                     },
                     {
                       Header: 'İşlemler',
@@ -445,17 +327,17 @@ class CustomersPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, customers} = state;
+  const {alert, brands} = state;
 
-  return {alert, customers};
+  return {alert, brands};
 }
 
 const actionCreators = {
-  getAll: customerActions.getAll,
-  addCustomer: customerActions.add,
-  updateCustomer: customerActions.update,
-  deleteCustomer: customerActions.delete,
+  getAll: brandActions.getAll,
+  addBrand: brandActions.add,
+  updateBrand: brandActions.update,
+  deleteBrand: brandActions.delete,
 };
 
-const connectedCustomersPage = connect(mapState, actionCreators)(CustomersPage);
-export {connectedCustomersPage as CustomersPage};
+const connectedBrandsPage = connect(mapState, actionCreators)(BrandsPage);
+export {connectedBrandsPage as BrandsPage};

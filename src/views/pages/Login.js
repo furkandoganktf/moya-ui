@@ -93,7 +93,7 @@ class LoginPage extends React.Component {
                     </InputGroup>
                     {submitted && !username && (
                       <label className="error" style={{color: 'red'}}>
-                        Username is required.
+                        Email zorunludur.
                       </label>
                     )}
                     <InputGroup>
@@ -103,7 +103,7 @@ class LoginPage extends React.Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder="Password"
+                        placeholder="Şifre"
                         type="password"
                         name="password"
                         onChange={this.handleChange}
@@ -111,7 +111,7 @@ class LoginPage extends React.Component {
                     </InputGroup>
                     {submitted && !password && (
                       <label className="error" style={{color: 'red'}}>
-                        Password is required.
+                        Şifre zorunludur.
                       </label>
                     )}
                   </CardBody>
@@ -124,7 +124,7 @@ class LoginPage extends React.Component {
                       type="submit"
                       name="submit_button"
                     >
-                      Get Started
+                      Giriş
                     </Button>
                   </CardFooter>
                 </Card>

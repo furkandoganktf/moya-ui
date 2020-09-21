@@ -27,7 +27,6 @@ class PackagesPage extends React.Component {
     this.state = {
       dataLoaded: false,
       alert: null,
-      blocking: false,
       loaderType: 'ball-triangle-path',
       message: 'Loading, please wait',
     };
@@ -52,7 +51,7 @@ class PackagesPage extends React.Component {
           return {
             id: value.id,
             name: value.name,
-            supplier: this.suppliers.find(o => o.id === value.supplier).name,
+            supplier: this.suppliers.find(o => o.id === value.supplier),
             stock: value.stock,
             actions: (
               <div className="actions-right">
@@ -60,7 +59,33 @@ class PackagesPage extends React.Component {
                 <Button
                   onClick={() => {
                     let obj = this.data.find(o => o.id === value.id);
-                    this.updateProductAlert(obj);
+                    this.updateProductAlert(obj, 'add');
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-add" />
+                </Button>{' '}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj, 'substract');
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-delete" />
+                </Button>{' '}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj, 'update');
                   }}
                   color="warning"
                   size="sm"
@@ -70,7 +95,6 @@ class PackagesPage extends React.Component {
                 >
                   <i className="tim-icons icon-pencil" />
                 </Button>{' '}
-                {/* use this button to remove the data row */}
                 <Button
                   onClick={() => {
                     let obj = this.data.find(o => o.id === value.id);
@@ -102,7 +126,7 @@ class PackagesPage extends React.Component {
     this.hideAlert();
     await this.props.addProduct({
       ...data,
-      supplier: data.supplier.value,
+      supplier: data.supplier[0].value,
       type: 'package',
     });
     if (this.props.alert.type === 'alert-success') {
@@ -114,14 +138,28 @@ class PackagesPage extends React.Component {
     }
   };
 
-  updateProduct = async (data, product) => {
+  updateProduct = async (data, product, action) => {
     this.hideAlert();
-    await this.props.updateProduct({
-      ...data,
-      id: product.id,
-      supplier: data.supplier.value,
-      type: 'package',
-    });
+    const stock =
+      action === 'add'
+        ? parseInt(product.stock) + parseInt(data.stock)
+        : action === 'substract'
+        ? parseInt(product.stock) - parseInt(data.stock)
+        : parseInt(data.stock);
+    const supplier =
+      action === 'update' ? data.supplier.value : product.supplier.id;
+    const {actions, ...oldProduct} = product;
+    const newProduct =
+      action === 'update'
+        ? {
+            ...data,
+            stock: stock,
+            id: product.id,
+            supplier: supplier,
+            type: 'package',
+          }
+        : {...oldProduct, supplier: supplier, stock: stock};
+    await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -163,8 +201,69 @@ class PackagesPage extends React.Component {
     });
   };
 
-  updateProductAlert = product => {
-    const defaultValue = this.suppliers.find(o => o.name === product.supplier);
+  updateProductAlert = (product, action) => {
+    const defaultValue = product.supplier;
+    let formName, submitText;
+    if (action === 'update') {
+      formName = 'Ürün Güncelleme';
+      submitText = 'Güncelleme';
+    } else if (action === 'add') {
+      formName = 'Stok Girişi';
+      submitText = 'Ekle';
+    } else if (action === 'substract') {
+      formName = 'Stok Çıkışı';
+      submitText = 'Çıkar';
+    }
+    const forms =
+      action === 'add' || action === 'substract'
+        ? [
+            {
+              label: 'Miktar*',
+              name: 'stock',
+              type: 'number',
+              placeholder: 'Miktar',
+              rules: {
+                required: true,
+              },
+              defaultValue: 0,
+            },
+          ]
+        : [
+            {
+              label: 'Ambalaj adı*',
+              name: 'name',
+              type: 'input',
+              placeholder: 'İsim',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.name,
+            },
+            {
+              label: 'Tedarikçi*',
+              name: 'supplier',
+              type: 'select',
+              placeholder: 'Tedarikçi',
+              rules: {
+                required: true,
+              },
+              defaultValue: {
+                value: defaultValue.id,
+                label: defaultValue.name,
+              },
+              data: this.suppliers,
+            },
+            {
+              label: 'Stok*',
+              name: 'stock',
+              type: 'number',
+              placeholder: 'Stok',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.stock,
+            },
+          ];
     this.setState({
       alert: (
         <ReactBSAlert
@@ -175,46 +274,11 @@ class PackagesPage extends React.Component {
           title=""
         >
           <CustomForm
-            name={'Ürün Güncelleme'}
-            submitText="Güncelle"
-            forms={[
-              {
-                label: 'Ambalaj adı*',
-                name: 'name',
-                type: 'input',
-                placeholder: 'İsim',
-                rules: {
-                  required: true,
-                },
-                defaultValue: product.name,
-              },
-              {
-                label: 'Tedarikçi*',
-                name: 'supplier',
-                type: 'select',
-                placeholder: 'Tedarikçi',
-                rules: {
-                  required: true,
-                },
-                defaultValue: {
-                  value: defaultValue.id,
-                  label: defaultValue.name,
-                },
-                data: this.suppliers,
-              },
-              {
-                label: 'Stok*',
-                name: 'stock',
-                type: 'input',
-                placeholder: 'Stok',
-                rules: {
-                  required: true,
-                },
-                defaultValue: product.stock,
-              },
-            ]}
+            name={formName}
+            submitText={submitText}
+            forms={forms}
             onCancel={this.hideAlert}
-            onSubmit={data => this.updateProduct(data, product)}
+            onSubmit={data => this.updateProduct(data, product, action)}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -260,7 +324,7 @@ class PackagesPage extends React.Component {
               {
                 label: 'Stok*',
                 name: 'stock',
-                type: 'input',
+                type: 'number',
                 placeholder: 'Stok',
                 rules: {
                   required: true,
@@ -303,7 +367,7 @@ class PackagesPage extends React.Component {
       <BlockUi
         className="block-ui"
         keepInView
-        blocking={this.state.blocking || this.props.products.loading}
+        blocking={!this.state.dataLoaded}
         message={this.state.message}
         loader={<Loader active type={this.state.loaderType} color="#02a17c" />}
       >
@@ -338,7 +402,7 @@ class PackagesPage extends React.Component {
                     },
                     {
                       Header: 'TEDARİKÇİ',
-                      accessor: 'supplier',
+                      accessor: 'supplier.name',
                     },
                     {
                       Header: 'Stok',
