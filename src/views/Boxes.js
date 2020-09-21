@@ -18,13 +18,14 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {productActions, supplierActions} from 'actions';
+import {productActions, supplierActions, brandActions} from 'actions';
 
 class BoxedProductsPage extends React.Component {
   constructor(props) {
     super(props);
     this.data = [];
     this.suppliers = [];
+    this.brands = [];
     this.state = {
       dataLoaded: false,
       alert: null,
@@ -41,18 +42,20 @@ class BoxedProductsPage extends React.Component {
 
   componentDidUpdate() {
     if (
+      this.props.brands.items &&
       this.props.suppliers.items &&
       this.props.products.items &&
       !this.state.dataLoaded
     ) {
       this.suppliers = this.props.suppliers.items.suppliers;
+      this.brands = this.props.brands.items.brands;
       this.data = this.props.products.items.products
         .filter(o => o.type === 'box')
         .map((value, key) => {
           return {
             id: value.id,
             name: value.name,
-            country: value.stock,
+            stock: value.stock,
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
@@ -325,7 +328,6 @@ class BoxedProductsPage extends React.Component {
                       Header: 'Kutulu Ürün Adı',
                       accessor: 'name',
                     },
-
                     {
                       Header: 'Stok',
                       accessor: 'stock',
@@ -359,13 +361,14 @@ class BoxedProductsPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, products, suppliers} = state;
+  const {alert, products, suppliers, brands} = state;
 
-  return {alert, products, suppliers};
+  return {alert, products, suppliers, brands};
 }
 
 const actionCreators = {
   getSuppliers: supplierActions.getAll,
+  getBrands: brandActions.getAll,
   getAll: productActions.getAll,
   addProduct: productActions.add,
   updateProduct: productActions.update,
