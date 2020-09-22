@@ -127,6 +127,7 @@ class MaterialsPage extends React.Component {
     this.hideAlert();
     await this.props.addProduct({
       ...data,
+      stock: parseInt(data.stock),
       supplier: data.supplier[0].value,
       type: 'material',
     });
@@ -154,7 +155,7 @@ class MaterialsPage extends React.Component {
       action === 'update'
         ? {
             ...data,
-            stock: stock,
+            stock: parseInt(data.stock),
             id: product.id,
             supplier: supplier,
             type: 'material',
@@ -248,10 +249,7 @@ class MaterialsPage extends React.Component {
               rules: {
                 required: true,
               },
-              defaultValue: {
-                value: defaultValue.id,
-                label: defaultValue.name,
-              },
+              defaultValue: defaultValue,
               data: this.suppliers,
             },
             {
@@ -286,6 +284,7 @@ class MaterialsPage extends React.Component {
         >
           <CustomForm
             name={formName}
+            type="update"
             submitText={submitText}
             forms={forms}
             onCancel={this.hideAlert}
@@ -310,6 +309,7 @@ class MaterialsPage extends React.Component {
           <CustomForm
             name={'Kayıt Formu'}
             submitText="Ekle"
+            type="add"
             forms={[
               {
                 label: 'Hammadde Adı*',

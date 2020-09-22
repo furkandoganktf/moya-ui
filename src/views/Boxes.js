@@ -56,14 +56,45 @@ class BoxedProductsPage extends React.Component {
           return {
             id: value.id,
             name: value.name,
+            supplier: this.suppliers.find(o => o.id === value.supplier),
+            brand: this.brands.find(o => o.id === value.brand),
             stock: value.stock,
+            materialCount: value.materialCount,
+            packageCount: value.packageCount,
+            content: value.content,
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
                 <Button
                   onClick={() => {
                     let obj = this.data.find(o => o.id === value.id);
-                    this.updateProductAlert(obj);
+                    this.updateProductAlert(obj, 'add');
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-add" />
+                </Button>{' '}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj, 'substract');
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-simple-delete" />
+                </Button>{' '}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj, 'update');
                   }}
                   color="warning"
                   size="sm"
@@ -103,7 +134,25 @@ class BoxedProductsPage extends React.Component {
 
   addProduct = async data => {
     this.hideAlert();
-    await this.props.addProduct({...data, type: 'box'});
+    let content = {};
+    for (let index = 1; index <= data.materialCount; index++) {
+      content[data['material_' + index].value] =
+        data['material_' + index + '_count'];
+    }
+    for (let index = 1; index <= data.packageCount; index++) {
+      content[data['package_' + index].value] =
+        data['package_' + index + '_count'];
+    }
+    let boxed_product = {
+      name: data.name,
+      supplier: data.supplier.value,
+      brand: data.brand.value,
+      stock: parseInt(data.stock),
+      materialCount: parseInt(data.materialCount),
+      packageCount: parseInt(data.packageCount),
+      content: content,
+    };
+    await this.props.addProduct({...boxed_product, type: 'box'});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -112,10 +161,45 @@ class BoxedProductsPage extends React.Component {
       this.notify(this.props.alert.message, 'danger');
     }
   };
-
-  updateProduct = async (data, product) => {
+  updateProduct = async (data, product, action) => {
     this.hideAlert();
-    await this.props.updateProduct({...data, id: product.id, type: 'box'});
+    const stock =
+      action === 'add'
+        ? parseInt(product.stock) + parseInt(data.stock)
+        : action === 'substract'
+        ? parseInt(product.stock) - parseInt(data.stock)
+        : parseInt(data.stock);
+    const supplier =
+      action === 'update' ? data.supplier.value : product.supplier.id;
+    const brand = action === 'update' ? data.brand.value : product.brand.id;
+    const {actions, ...oldProduct} = product;
+    let content = {};
+    for (let index = 1; index <= data.materialCount; index++) {
+      content[data['material_' + index].value] =
+        data['material_' + index + '_count'];
+    }
+    for (let index = 1; index <= data.packageCount; index++) {
+      content[data['package_' + index].value] =
+        data['package_' + index + '_count'];
+    }
+    let boxed_product = {
+      name: data.name,
+      supplier: supplier,
+      brand: brand,
+      materialCount: parseInt(data.materialCount),
+      packageCount: parseInt(data.packageCount),
+      content: content,
+    };
+    const newProduct =
+      action === 'update'
+        ? {
+            ...boxed_product,
+            id: product.id,
+            stock: stock,
+            type: 'box',
+          }
+        : {...oldProduct, supplier: supplier, brand: brand, stock: stock};
+    await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
@@ -157,7 +241,114 @@ class BoxedProductsPage extends React.Component {
     });
   };
 
-  updateProductAlert = product => {
+  updateProductAlert = (product, action) => {
+    const defaultSupplierValue = product.supplier;
+    const defaultBrandValue = product.brand;
+    let materials = [];
+    let packages = [];
+    for (let [key, value] of Object.entries(product.content)) {
+      let item = this.props.products.items.products.find(o => o.id === key);
+      if (item.type === 'material') {
+        materials.push({
+          item: {value: item.id, label: item.name},
+          stock: value,
+        });
+      } else if (item.type === 'package') {
+        packages.push({
+          item: {value: item.id, label: item.name},
+          stock: value,
+        });
+      }
+    }
+    let formName, submitText;
+    if (action === 'update') {
+      formName = 'Ürün Güncelleme';
+      submitText = 'Güncelleme';
+    } else if (action === 'add') {
+      formName = 'Stok Girişi';
+      submitText = 'Ekle';
+    } else if (action === 'substract') {
+      formName = 'Stok Çıkışı';
+      submitText = 'Çıkar';
+    }
+    const forms =
+      action === 'add' || action === 'substract'
+        ? [
+            {
+              label: 'Miktar*',
+              name: 'stock',
+              type: 'number',
+              placeholder: 'Miktar',
+              rules: {
+                required: true,
+              },
+              defaultValue: 0,
+            },
+          ]
+        : [
+            {
+              label: 'Kutulu Ürün Adı*',
+              name: 'name',
+              type: 'input',
+              placeholder: 'İsim',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.name,
+            },
+            {
+              label: 'Tedarikçi*',
+              name: 'supplier',
+              type: 'select',
+              placeholder: 'Tedarikçi',
+              rules: {
+                required: true,
+              },
+              defaultValue: defaultSupplierValue,
+              data: this.suppliers,
+            },
+            {
+              label: 'Marka*',
+              name: 'brand',
+              type: 'select',
+              placeholder: 'Marka',
+              rules: {
+                required: true,
+              },
+              defaultValue: defaultBrandValue,
+              data: this.brands,
+            },
+            {
+              label: 'Hammadde Sayısı*',
+              name: 'materialCount',
+              type: 'number',
+              placeholder: 'Hammadde Sayısı',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.materialCount,
+            },
+            {
+              label: 'Ambalaj Sayısı*',
+              name: 'packageCount',
+              type: 'number',
+              placeholder: 'Ambalaj Sayısı',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.packageCount,
+            },
+            {
+              label: 'Stok*',
+              name: 'stock',
+              type: 'input',
+              placeholder: 'Stok',
+              rules: {
+                required: true,
+              },
+              defaultValue: product.stock,
+            },
+          ];
     this.setState({
       alert: (
         <ReactBSAlert
@@ -168,34 +359,17 @@ class BoxedProductsPage extends React.Component {
           title=""
         >
           <CustomForm
-            name={'Ürün Güncelleme'}
-            submitText="Güncelle"
+            name={formName}
+            submitText={submitText}
+            type="update"
+            spec="box"
+            forms={forms}
             suppliers={this.suppliers}
+            materials={materials}
+            packages={packages}
             products={this.props.products.items.products}
-            forms={[
-              {
-                label: 'Kutulu Ürün Adı*',
-                name: 'name',
-                type: 'input',
-                placeholder: 'İsim',
-                rules: {
-                  required: true,
-                },
-                defaultValue: product.name,
-              },
-              {
-                label: 'Stok*',
-                name: 'stock',
-                type: 'input',
-                placeholder: 'Stok',
-                rules: {
-                  required: true,
-                },
-                defaultValue: product.country,
-              },
-            ]}
             onCancel={this.hideAlert}
-            onSubmit={data => this.updateProduct(data, product)}
+            onSubmit={data => this.updateProduct(data, product, action)}
             onError={this.onError}
           />
         </ReactBSAlert>
@@ -215,9 +389,12 @@ class BoxedProductsPage extends React.Component {
         >
           <CustomForm
             name={'Kayıt Formu'}
-            type="box"
+            spec="box"
             submitText="Ekle"
+            type="add"
             suppliers={this.suppliers}
+            materials={[]}
+            packages={[]}
             products={this.props.products.items.products}
             forms={[
               {
@@ -229,6 +406,28 @@ class BoxedProductsPage extends React.Component {
                   required: true,
                 },
                 defaultValue: '',
+              },
+              {
+                label: 'Tedarikçi*',
+                name: 'supplier',
+                type: 'select',
+                placeholder: 'Tedarikçi',
+                rules: {
+                  required: true,
+                },
+                defaultValue: '',
+                data: this.suppliers,
+              },
+              {
+                label: 'Marka*',
+                name: 'brand',
+                type: 'select',
+                placeholder: 'Marka',
+                rules: {
+                  required: true,
+                },
+                defaultValue: '',
+                data: this.brands,
               },
               {
                 label: 'Hammadde Sayısı*',
@@ -328,6 +527,14 @@ class BoxedProductsPage extends React.Component {
                     {
                       Header: 'Kutulu Ürün Adı',
                       accessor: 'name',
+                    },
+                    {
+                      Header: 'TEDARİKÇİ',
+                      accessor: 'supplier.name',
+                    },
+                    {
+                      Header: 'Marka',
+                      accessor: 'brand.name',
                     },
                     {
                       Header: 'Stok',

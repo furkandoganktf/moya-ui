@@ -18,10 +18,15 @@ export default function CustomForm(props) {
   const {control, handleSubmit, errors, watch} = useForm();
   var materialCount = 0;
   var packageCount = 0;
-
-  if (props.type === 'box') {
+  let materials = [];
+  let packages = [];
+  let supplier = '';
+  if (props.spec === 'box') {
+    materials = props.materials;
+    packages = props.packages;
     materialCount = watch('materialCount');
     packageCount = watch('packageCount');
+    supplier = watch('supplier');
   }
 
   const getMaterials = n => {
@@ -31,7 +36,59 @@ export default function CustomForm(props) {
       .map((value, key) => {
         return {key: key, label: value.name, value: value.id};
       });
-    for (var i = 0; i < n; i++) {
+    if (n < materials.length) materials = materials.slice(-1, n);
+    for (let i = 0; i < materials.length; i++) {
+      rows.push(
+        <Fragment key={i}>
+          <FormGroup
+            className={`has-label ${
+              _.get(`${'material_' + (i + 1)}.type`, errors) ? 'has-danger' : ''
+            }`}
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+            }}
+          >
+            <label
+              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+            >
+              {'Hammadde ' + (i + 1)}
+            </label>
+            <Controller
+              as={Select}
+              options={options}
+              name={'material_' + (i + 1)}
+              placeholder={'Hammadde ' + (i + 1)}
+              control={control}
+              defaultValue={materials[i].item}
+              style={{color: 'white'}}
+            />
+          </FormGroup>
+          <FormGroup
+            className={`has-label ${
+              _.get(`${'material_' + (i + 1) + '_count'}.type`, errors)
+                ? 'has-danger'
+                : ''
+            }`}
+          >
+            <label style={{marginBottom: '5px', float: 'left'}}>
+              {'Hammadde ' + (i + 1) + ' Miktarı'}
+            </label>
+            <Controller
+              as={Input}
+              name={'material_' + (i + 1) + '_count'}
+              type={'number'}
+              placeholder={'Hammadde ' + (i + 1) + ' Miktarı'}
+              control={control}
+              defaultValue={materials[i].stock}
+              style={{color: 'white'}}
+            />
+          </FormGroup>
+        </Fragment>,
+      );
+    }
+    for (let i = materials.length; i < n; i++) {
       rows.push(
         <Fragment key={i}>
           <FormGroup
@@ -88,11 +145,63 @@ export default function CustomForm(props) {
   const getPackages = n => {
     var rows = [];
     const options = props.products
-      .filter(o => o.type === 'material')
+      .filter(o => o.type === 'package')
       .map((value, key) => {
         return {key: key, label: value.name, value: value.id};
       });
-    for (var i = 0; i < n; i++) {
+    if (n < packages.length) packages = packages.slice(-1, n);
+    for (let i = 0; i < packages.length; i++) {
+      rows.push(
+        <Fragment key={i}>
+          <FormGroup
+            className={`has-label ${
+              _.get(`${'package_' + (i + 1)}.type`, errors) ? 'has-danger' : ''
+            }`}
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+            }}
+          >
+            <label
+              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+            >
+              {'Ambalaj ' + (i + 1)}
+            </label>
+            <Controller
+              as={Select}
+              options={options}
+              name={'package_' + (i + 1)}
+              placeholder={'Ambalaj ' + (i + 1)}
+              control={control}
+              defaultValue={packages[i].item}
+              style={{color: 'white'}}
+            />
+          </FormGroup>
+          <FormGroup
+            className={`has-label ${
+              _.get(`${'package_' + (i + 1) + '_count'}.type`, errors)
+                ? 'has-danger'
+                : ''
+            }`}
+          >
+            <label style={{marginBottom: '5px', float: 'left'}}>
+              {'Ambalaj ' + (i + 1) + ' Miktarı'}
+            </label>
+            <Controller
+              as={Input}
+              name={'package_' + (i + 1) + '_count'}
+              type={'numbeer'}
+              placeholder={'Ambalaj ' + (i + 1) + ' Miktarı'}
+              control={control}
+              defaultValue={packages[i].stock}
+              style={{color: 'white'}}
+            />
+          </FormGroup>
+        </Fragment>,
+      );
+    }
+    for (let i = packages.length; i < n; i++) {
       rows.push(
         <Fragment key={i}>
           <FormGroup
@@ -184,9 +293,18 @@ export default function CustomForm(props) {
               form.rules['validate'] = value => value === watch('password');
             }
             if (form.type === 'select') {
-              const options = form.data.map((value, key) => {
-                return {key: key, label: value.name, value: value.id};
-              });
+              let options = [];
+              if (props.spec === 'box' && form.name === 'brand') {
+                options = form.data
+                  .filter(o => o.supplier === supplier?.value)
+                  .map((value, key) => {
+                    return {key: key, label: value.name, value: value.id};
+                  });
+              } else {
+                options = form.data.map((value, key) => {
+                  return {key: key, label: value.name, value: value.id};
+                });
+              }
               return (
                 <FormGroup
                   key={index}
@@ -210,12 +328,20 @@ export default function CustomForm(props) {
                   </label>
                   <Controller
                     as={Select}
-                    style={{color: 'white'}}
                     options={options}
                     name={form.name}
+                    placeholder={form.placeholder}
                     rules={form.rules}
                     control={control}
-                    defaultValue={options}
+                    defaultValue={
+                      props.type === 'add'
+                        ? ''
+                        : {
+                            value: form.defaultValue.id,
+                            label: form.defaultValue.name,
+                          }
+                    }
+                    style={{color: 'white'}}
                   />
                   {validate(form)}
                 </FormGroup>

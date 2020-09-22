@@ -217,6 +217,16 @@ class CustomersPage extends React.Component {
                 defaultValue: customer.phone,
               },
               {
+                label: 'Açık Adres',
+                name: 'adress',
+                type: 'input',
+                placeholder: 'Adres',
+                rules: {
+                  required: false,
+                },
+                defaultValue: '',
+              },
+              {
                 label: 'Notlar',
                 name: 'notes',
                 type: 'input',
@@ -307,6 +317,16 @@ class CustomersPage extends React.Component {
                 placeholder: 'Telefon',
                 rules: {
                   required: true,
+                },
+                defaultValue: '',
+              },
+              {
+                label: 'Açık Adres',
+                name: 'adress',
+                type: 'input',
+                placeholder: 'Adres',
+                rules: {
+                  required: false,
                 },
                 defaultValue: '',
               },

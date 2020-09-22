@@ -172,6 +172,7 @@ class BrandsPage extends React.Component {
           <CustomForm
             name={'Marka Güncelleme'}
             submitText="Güncelle"
+            type = "update"
             forms={[
               {
                 label: 'Marka adı*',
@@ -220,6 +221,7 @@ class BrandsPage extends React.Component {
           <CustomForm
             name={'Kayıt Formu'}
             submitText="Ekle"
+            type = "add"
             forms={[
               {
                 label: 'Marka Adı*',

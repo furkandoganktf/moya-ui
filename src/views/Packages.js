@@ -127,6 +127,7 @@ class PackagesPage extends React.Component {
     await this.props.addProduct({
       ...data,
       supplier: data.supplier[0].value,
+      stock: parseInt(data.stock),
       type: 'package',
     });
     if (this.props.alert.type === 'alert-success') {
@@ -158,7 +159,7 @@ class PackagesPage extends React.Component {
             supplier: supplier,
             type: 'package',
           }
-        : {...oldProduct, supplier: supplier, stock: stock};
+        : {...oldProduct, supplier: supplier, stock: parseInt(data.stock)};
     await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
@@ -247,10 +248,7 @@ class PackagesPage extends React.Component {
               rules: {
                 required: true,
               },
-              defaultValue: {
-                value: defaultValue.id,
-                label: defaultValue.name,
-              },
+              defaultValue: defaultValue,
               data: this.suppliers,
             },
             {
@@ -276,6 +274,7 @@ class PackagesPage extends React.Component {
           <CustomForm
             name={formName}
             submitText={submitText}
+            type="update"
             forms={forms}
             onCancel={this.hideAlert}
             onSubmit={data => this.updateProduct(data, product, action)}
@@ -299,6 +298,7 @@ class PackagesPage extends React.Component {
           <CustomForm
             name={'Kayıt Formu'}
             submitText="Ekle"
+            type="add"
             forms={[
               {
                 label: 'Ambalaj Adı*',
