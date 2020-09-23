@@ -4,6 +4,7 @@ import {SuppliersPage} from 'views/Suppliers.js';
 import {BrandsPage} from 'views/Brands.js';
 import {LoginPage} from 'views/Login.js';
 import Logs from 'views/Logs';
+import {StockLogs} from 'views/Stocks';
 import {PackagesPage} from 'views/Packages';
 import {BoxedProductsPage} from 'views/Boxes';
 import {MaterialsPage} from 'views/Materials';
@@ -60,6 +61,13 @@ const routes = [
     layout: '/admin',
   },
   {
+    path: '/stockLogs',
+    name: 'Stok GİRİŞ-ÇIKIŞ',
+    icon: 'tim-icons icon-notes',
+    component: StockLogs,
+    layout: '/admin',
+  },
+  {
     path: '/users',
     name: 'KULLANICILAR',
     icon: 'tim-icons icon-book-bookmark',
@@ -69,7 +77,7 @@ const routes = [
   {
     path: '/logs',
     name: 'Loglar',
-    icon: 'tim-icons icon-notes',
+    icon: 'tim-icons icon-paper',
     component: Logs,
     layout: '/admin',
   },

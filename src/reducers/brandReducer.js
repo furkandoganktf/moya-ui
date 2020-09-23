@@ -3,31 +3,17 @@ import {brandConstants} from 'constants/brandConstants';
 export function brands(state = {}, action) {
   switch (action.type) {
     case brandConstants.ADD_REQUEST:
-      return {adding: true};
-    case brandConstants.ADD_SUCCESS:
-      return {};
-    case brandConstants.ADD_FAILURE:
-      return {};
+      return {...state, adding: true};
     case brandConstants.GETALL_REQUEST:
-      return {
-        loading: true,
-      };
+      return {...state, loading: true};
     case brandConstants.GETALL_SUCCESS:
-      return {
-        items: action.data,
-      };
+      return {...state, items: action.data};
     case brandConstants.GETALL_FAILURE:
-      return {
-        error: action.error,
-      };
+      return {...state, error: action.error};
     case brandConstants.DELETE_FAILURE:
-      return {
-        error: action.error,
-      };
+      return {...state, error: action.error};
     case brandConstants.UPDATE_FAILURE:
-      return {
-        error: action.error,
-      };
+      return {...state, error: action.error};
     default:
       return state;
   }

@@ -106,6 +106,19 @@ export const getLogs = async () => {
   return handleResponse(response);
 };
 
+export const getStockLogs = async () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/stockLogs`,
+    requestOptions,
+  );
+  return handleResponse(response);
+};
+
 export const userService = {
   login,
   logout,

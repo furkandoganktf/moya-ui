@@ -234,13 +234,15 @@ class BoxedProductsPage extends React.Component {
     }
     if (this.props.alert.type === 'alert-success') {
       if (action === 'add' || action === 'substract' || action === 'box') {
-        await stockUpdate({
-          id: product.id,
-          type: action,
-          oldStock: product.stock,
-          newStock: stock,
-          customer: data.customer?.value,
-        });
+        if (stock !== product.stock) {
+          await stockUpdate({
+            productId: product.id,
+            type: action,
+            oldStock: product.stock,
+            newStock: stock,
+            customer: data.customer?.value,
+          });
+        }
       }
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
