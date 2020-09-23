@@ -178,7 +178,7 @@ class BoxedProductsPage extends React.Component {
     await this.props.addProduct({...boxed_product, type: 'box'});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -245,7 +245,7 @@ class BoxedProductsPage extends React.Component {
         }
       }
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -257,7 +257,7 @@ class BoxedProductsPage extends React.Component {
     await this.props.deleteProduct(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');

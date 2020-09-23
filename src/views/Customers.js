@@ -33,8 +33,8 @@ class CustomersPage extends React.Component {
     this.notificationAlertRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.props.getAll();
+  componentDidMount = async () => {
+    await this.props.getAll();
   };
 
   componentDidUpdate() {
@@ -91,7 +91,7 @@ class CustomersPage extends React.Component {
     await this.props.addCustomer(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -103,7 +103,7 @@ class CustomersPage extends React.Component {
     await this.props.updateCustomer({...data, id: customer.id});
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -115,7 +115,7 @@ class CustomersPage extends React.Component {
     await this.props.deleteCustomer(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');

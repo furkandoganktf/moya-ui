@@ -60,8 +60,8 @@ class StockLogs extends React.Component {
           newStock: value.newStock,
           customer: this.customers.find(o => o.id === value.customer),
           brand: this.brands.find(o => o.id === product.brand),
-          supplier: this.brands.find(o => o.id === product.supplier),
-          name: product.name,
+          supplier: this.suppliers.find(o => o.id === product.supplier),
+          name: product?.name,
           type: value.type,
           date: value.date,
           timeStamp: value.timeStamp,
@@ -101,31 +101,31 @@ class StockLogs extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Tür',
+                      Header: 'TÜR',
                       accessor: 'type',
                     },
                     {
-                      Header: 'Ürün Adı',
+                      Header: 'ÜRÜN ADI',
                       accessor: 'name',
                     },
                     {
-                      Header: 'Tedarikçi',
+                      Header: 'TEDARİKÇİ',
                       accessor: 'supplier.name',
                     },
                     {
-                      Header: 'Marka',
+                      Header: 'MARKA',
                       accessor: 'brand.name',
                     },
                     {
-                      Header: 'Müşteri',
+                      Header: 'MÜŞTERİ',
                       accessor: 'customer.name',
                     },
                     {
-                      Header: 'ESKİ Stok',
+                      Header: 'ESKİ STOK',
                       accessor: 'oldStock',
                     },
                     {
-                      Header: 'YENİ Stok',
+                      Header: 'YENİ STOK',
                       accessor: 'newStock',
                     },
                     {

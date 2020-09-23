@@ -103,7 +103,7 @@ class BrandsPage extends React.Component {
     });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -119,7 +119,7 @@ class BrandsPage extends React.Component {
     });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
@@ -131,7 +131,7 @@ class BrandsPage extends React.Component {
     await this.props.deleteBrand(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
-      this.props.getAll();
+      await this.props.getAll();
       this.setState({dataLoaded: false});
     } else {
       this.notify(this.props.alert.message, 'danger');
