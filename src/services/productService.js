@@ -43,6 +43,19 @@ const add = async product => {
   return handleResponse(response);
 };
 
+const packageProduct = async product => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {...authHeader(), 'Content-Type': 'application/json'},
+    body: JSON.stringify(product),
+  };
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/products/package`,
+    requestOptions,
+  );
+  return handleResponse(response);
+};
+
 const update = async product => {
   const requestOptions = {
     method: 'PUT',
@@ -71,8 +84,22 @@ const _delete = async id => {
   return handleResponse(response);
 };
 
+export const stockUpdate = async product => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {...authHeader(), 'Content-Type': 'application/json'},
+    body: JSON.stringify(product),
+  };
+  const response = await fetch(
+    urlConstants.REQUEST_URL + `/products/stocks`,
+    requestOptions,
+  );
+  return handleResponse(response);
+};
+
 export const productService = {
   add,
+  packageProduct,
   getAll,
   getById,
   update,

@@ -128,7 +128,7 @@ class MaterialsPage extends React.Component {
     await this.props.addProduct({
       ...data,
       stock: parseInt(data.stock),
-      supplier: data.supplier[0].value,
+      supplier: data.supplier.value,
       type: 'material',
     });
     if (this.props.alert.type === 'alert-success') {
@@ -226,6 +226,7 @@ class MaterialsPage extends React.Component {
               placeholder: 'Miktar',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: 0,
             },
@@ -259,6 +260,7 @@ class MaterialsPage extends React.Component {
               placeholder: 'Stok',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: product.stock,
             },
@@ -339,6 +341,7 @@ class MaterialsPage extends React.Component {
                 placeholder: 'Stok',
                 rules: {
                   required: true,
+                  min: 0,
                 },
                 defaultValue: 0,
               },

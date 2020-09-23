@@ -28,6 +28,22 @@ const add = product => {
   };
 };
 
+const packageProduct = product => {
+  return async dispatch => {
+    dispatch(request(productConstants.ADD_REQUEST, product));
+    await productService.packageProduct(product).then(
+      () => {
+        dispatch(success(productConstants.ADD_SUCCESS, product));
+        dispatch(alertActions.success('Ürün Başarıyla Paketlendi'));
+      },
+      error => {
+        dispatch(failure(productConstants.ADD_FAILURE, error));
+        dispatch(alertActions.error(error.message || error));
+      },
+    );
+  };
+};
+
 const getAll = () => {
   return async dispatch => {
     dispatch(request(productConstants.GETALL_REQUEST));
@@ -74,6 +90,7 @@ const update = product => {
 
 export const productActions = {
   add,
+  packageProduct,
   getAll,
   delete: _delete,
   update,

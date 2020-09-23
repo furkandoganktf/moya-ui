@@ -30,11 +30,11 @@ const add = customer => {
 };
 
 const getAll = () => {
-  return dispatch => {
+  return async dispatch => {
     dispatch(request(customerConstants.GETALL_REQUEST));
-
-    customerService.getAll().then(
-      customers => dispatch(success(customerConstants.GETALL_SUCCESS, customers)),
+    await customerService.getAll().then(
+      customers =>
+        dispatch(success(customerConstants.GETALL_SUCCESS, customers)),
       error => dispatch(failure(customerConstants.GETALL_FAILURE, error)),
     );
   };

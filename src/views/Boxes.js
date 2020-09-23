@@ -18,7 +18,13 @@ import {
   Row,
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
-import {productActions, supplierActions, brandActions} from 'actions';
+import {
+  productActions,
+  supplierActions,
+  brandActions,
+  customerActions,
+} from 'actions';
+import {stockUpdate} from 'services/productService';
 
 class BoxedProductsPage extends React.Component {
   constructor(props) {
@@ -26,6 +32,7 @@ class BoxedProductsPage extends React.Component {
     this.data = [];
     this.suppliers = [];
     this.brands = [];
+    this.customers = [];
     this.state = {
       dataLoaded: false,
       alert: null,
@@ -38,16 +45,19 @@ class BoxedProductsPage extends React.Component {
   componentDidMount = async () => {
     await this.props.getSuppliers();
     await this.props.getBrands();
+    await this.props.getCustomers();
     await this.props.getAll();
   };
 
   componentDidUpdate() {
     if (
+      this.props.customers.items &&
       this.props.brands.items &&
       this.props.suppliers.items &&
       this.props.products.items &&
       !this.state.dataLoaded
     ) {
+      this.customers = this.props.customers.items.customers;
       this.suppliers = this.props.suppliers.items.suppliers;
       this.brands = this.props.brands.items.brands;
       this.data = this.props.products.items.products
@@ -65,6 +75,19 @@ class BoxedProductsPage extends React.Component {
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
+                <Button
+                  onClick={() => {
+                    let obj = this.data.find(o => o.id === value.id);
+                    this.updateProductAlert(obj, 'box');
+                  }}
+                  color="warning"
+                  size="sm"
+                  className={classNames('btn-icon btn-link like', {
+                    'btn-neutral': key < 5,
+                  })}
+                >
+                  <i className="tim-icons icon-app" />
+                </Button>{' '}
                 <Button
                   onClick={() => {
                     let obj = this.data.find(o => o.id === value.id);
@@ -163,44 +186,62 @@ class BoxedProductsPage extends React.Component {
   };
   updateProduct = async (data, product, action) => {
     this.hideAlert();
-    const stock =
-      action === 'add'
-        ? parseInt(product.stock) + parseInt(data.stock)
-        : action === 'substract'
-        ? parseInt(product.stock) - parseInt(data.stock)
-        : parseInt(data.stock);
-    const supplier =
-      action === 'update' ? data.supplier.value : product.supplier.id;
-    const brand = action === 'update' ? data.brand.value : product.brand.id;
-    const {actions, ...oldProduct} = product;
-    let content = {};
-    for (let index = 1; index <= data.materialCount; index++) {
-      content[data['material_' + index].value] =
-        data['material_' + index + '_count'];
+    let stock = 0;
+    if (action === 'box') {
+      await this.props.packageProduct({
+        id: product.id,
+        amount: parseInt(data.stock),
+      });
+      stock = parseInt(product.stock) + parseInt(data.stock);
+    } else {
+      stock =
+        action === 'add'
+          ? parseInt(product.stock) + parseInt(data.stock)
+          : action === 'substract'
+          ? parseInt(product.stock) - parseInt(data.stock)
+          : parseInt(data.stock);
+      const supplier =
+        action === 'update' ? data.supplier.value : product.supplier.id;
+      const brand = action === 'update' ? data.brand.value : product.brand.id;
+      const {actions, ...oldProduct} = product;
+      let content = {};
+      for (let index = 1; index <= data.materialCount; index++) {
+        content[data['material_' + index].value] =
+          data['material_' + index + '_count'];
+      }
+      for (let index = 1; index <= data.packageCount; index++) {
+        content[data['package_' + index].value] =
+          data['package_' + index + '_count'];
+      }
+      let boxed_product = {
+        name: data.name,
+        supplier: supplier,
+        brand: brand,
+        materialCount: parseInt(data.materialCount),
+        packageCount: parseInt(data.packageCount),
+        content: content,
+      };
+      const newProduct =
+        action === 'update'
+          ? {
+              ...boxed_product,
+              id: product.id,
+              stock: stock,
+              type: 'box',
+            }
+          : {...oldProduct, supplier: supplier, brand: brand, stock: stock};
+      await this.props.updateProduct(newProduct);
     }
-    for (let index = 1; index <= data.packageCount; index++) {
-      content[data['package_' + index].value] =
-        data['package_' + index + '_count'];
-    }
-    let boxed_product = {
-      name: data.name,
-      supplier: supplier,
-      brand: brand,
-      materialCount: parseInt(data.materialCount),
-      packageCount: parseInt(data.packageCount),
-      content: content,
-    };
-    const newProduct =
-      action === 'update'
-        ? {
-            ...boxed_product,
-            id: product.id,
-            stock: stock,
-            type: 'box',
-          }
-        : {...oldProduct, supplier: supplier, brand: brand, stock: stock};
-    await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
+      if (action === 'add' || action === 'substract' || action === 'box') {
+        await stockUpdate({
+          id: product.id,
+          type: action,
+          oldStock: product.stock,
+          newStock: stock,
+          customer: data.customer?.value,
+        });
+      }
       this.notify(this.props.alert.message, 'success');
       this.props.getAll();
       this.setState({dataLoaded: false});
@@ -270,9 +311,12 @@ class BoxedProductsPage extends React.Component {
     } else if (action === 'substract') {
       formName = 'Stok Çıkışı';
       submitText = 'Çıkar';
+    } else if (action === 'box') {
+      formName = 'Ürün Paketleme';
+      submitText = 'Paketle';
     }
     const forms =
-      action === 'add' || action === 'substract'
+      action === 'substract'
         ? [
             {
               label: 'Miktar*',
@@ -281,6 +325,32 @@ class BoxedProductsPage extends React.Component {
               placeholder: 'Miktar',
               rules: {
                 required: true,
+                min: 0,
+              },
+              defaultValue: 0,
+            },
+            {
+              label: 'Müşteri*',
+              name: 'customer',
+              type: 'select',
+              placeholder: 'Müşteri',
+              rules: {
+                required: true,
+              },
+              defaultValue: '',
+              data: this.customers,
+            },
+          ]
+        : action === 'add' || action === 'box'
+        ? [
+            {
+              label: 'Miktar*',
+              name: 'stock',
+              type: 'number',
+              placeholder: 'Miktar',
+              rules: {
+                required: true,
+                min: 0,
               },
               defaultValue: 0,
             },
@@ -325,6 +395,7 @@ class BoxedProductsPage extends React.Component {
               placeholder: 'Hammadde Sayısı',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: product.materialCount,
             },
@@ -335,6 +406,7 @@ class BoxedProductsPage extends React.Component {
               placeholder: 'Ambalaj Sayısı',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: product.packageCount,
             },
@@ -345,6 +417,7 @@ class BoxedProductsPage extends React.Component {
               placeholder: 'Stok',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: product.stock,
             },
@@ -436,6 +509,7 @@ class BoxedProductsPage extends React.Component {
                 placeholder: 'Hammadde Sayısı',
                 rules: {
                   required: true,
+                  min: 0,
                 },
                 defaultValue: 0,
               },
@@ -456,6 +530,7 @@ class BoxedProductsPage extends React.Component {
                 placeholder: 'Stok',
                 rules: {
                   required: true,
+                  min: 0,
                 },
                 defaultValue: '',
               },
@@ -569,15 +644,17 @@ class BoxedProductsPage extends React.Component {
 }
 
 function mapState(state) {
-  const {alert, products, suppliers, brands} = state;
+  const {alert, products, suppliers, brands, customers} = state;
 
-  return {alert, products, suppliers, brands};
+  return {alert, products, suppliers, brands, customers};
 }
 
 const actionCreators = {
   getSuppliers: supplierActions.getAll,
   getBrands: brandActions.getAll,
+  getCustomers: customerActions.getAll,
   getAll: productActions.getAll,
+  packageProduct: productActions.packageProduct,
   addProduct: productActions.add,
   updateProduct: productActions.update,
   deleteProduct: productActions.delete,

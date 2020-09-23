@@ -99,7 +99,7 @@ class BrandsPage extends React.Component {
     this.hideAlert();
     await this.props.addBrand({
       ...data,
-      supplier: data.supplier[0].value,
+      supplier: data.supplier.value,
     });
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');

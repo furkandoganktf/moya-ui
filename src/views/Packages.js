@@ -126,7 +126,7 @@ class PackagesPage extends React.Component {
     this.hideAlert();
     await this.props.addProduct({
       ...data,
-      supplier: data.supplier[0].value,
+      supplier: data.supplier.value,
       stock: parseInt(data.stock),
       type: 'package',
     });
@@ -225,6 +225,7 @@ class PackagesPage extends React.Component {
               placeholder: 'Miktar',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: 0,
             },
@@ -258,6 +259,7 @@ class PackagesPage extends React.Component {
               placeholder: 'Stok',
               rules: {
                 required: true,
+                min: 0,
               },
               defaultValue: product.stock,
             },
@@ -328,6 +330,7 @@ class PackagesPage extends React.Component {
                 placeholder: 'Stok',
                 rules: {
                   required: true,
+                  min: 0,
                 },
                 defaultValue: 0,
               },
