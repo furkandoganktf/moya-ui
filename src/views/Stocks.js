@@ -55,8 +55,8 @@ class StockLogs extends React.Component {
       this.data = this.data.map(value => {
         let product = this.products.find(o => o.id === value.productId);
         let customer = this.customers.find(o => o.id === value.customer);
-        let brand = this.brands.find(o => o.id === product.brand);
-        let supplier = this.suppliers.find(o => o.id === product.supplier);
+        let brand = this.brands.find(o => o.id === product?.brand);
+        let supplier = this.suppliers.find(o => o.id === product?.supplier);
         return {
           id: value.id,
           oldStock: value.oldStock,

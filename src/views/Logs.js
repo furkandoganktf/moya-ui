@@ -57,7 +57,7 @@ class Logs extends React.Component {
                   columns={[
                     {
                       Header: 'Kullanıcı',
-                      accessor: 'username',
+                      accessor: 'userName',
                     },
                     {
                       Header: 'Mesaj',

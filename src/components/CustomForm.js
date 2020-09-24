@@ -191,7 +191,7 @@ export default function CustomForm(props) {
             <Controller
               as={Input}
               name={'package_' + (i + 1) + '_count'}
-              type={'numbeer'}
+              type={'number'}
               placeholder={'Ambalaj ' + (i + 1) + ' Miktarı'}
               control={control}
               defaultValue={packages[i].stock}
@@ -242,7 +242,7 @@ export default function CustomForm(props) {
             <Controller
               as={Input}
               name={'package_' + (i + 1) + '_count'}
-              type={'numbeer'}
+              type={'number'}
               placeholder={'Ambalaj ' + (i + 1) + ' Miktarı'}
               control={control}
               defaultValue={''}
