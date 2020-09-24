@@ -24,7 +24,7 @@ class Logs extends React.Component {
     const data = await getLogs();
     this.data = data.logs;
     this.setState({
-      dataLoaded:true
+      dataLoaded: true,
     });
   };
 
@@ -51,13 +51,13 @@ class Logs extends React.Component {
               </CardHeader>
               <CardBody>
                 <ReactTable
-                  sorted={ [{ id: 'timeStamp', desc: false }]}
+                  sorted={[{id: 'timeStamp', desc: true}]}
                   data={this.data}
                   resizable={false}
                   columns={[
                     {
                       Header: 'Kullanıcı',
-                      accessor: 'email',
+                      accessor: 'username',
                     },
                     {
                       Header: 'Mesaj',
@@ -66,6 +66,11 @@ class Logs extends React.Component {
                     {
                       Header: 'TARİH',
                       accessor: 'date',
+                    },
+                    {
+                      Header: 'time',
+                      accessor: 'timeStamp',
+                      show: false,
                     },
                     {
                       Header: ' ',

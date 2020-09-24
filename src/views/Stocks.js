@@ -54,14 +54,19 @@ class StockLogs extends React.Component {
       this.products = this.props.products.items.products;
       this.data = this.data.map(value => {
         let product = this.products.find(o => o.id === value.productId);
+        let customer = this.customers.find(o => o.id === value.customer);
+        let brand = this.brands.find(o => o.id === product.brand);
+        let supplier = this.suppliers.find(o => o.id === product.supplier);
         return {
           id: value.id,
           oldStock: value.oldStock,
           newStock: value.newStock,
-          customer: this.customers.find(o => o.id === value.customer),
-          brand: this.brands.find(o => o.id === product.brand),
-          supplier: this.suppliers.find(o => o.id === product.supplier),
-          name: product?.name,
+          customer: customer,
+          brand: brand,
+          brandName: brand?.name ? brand.name : value.brandName,
+          supplier: supplier,
+          supplierName: supplier?.name ? supplier.name : value.supplierName,
+          name: product?.name ? product.name : value.productName,
           type: value.type,
           date: value.date,
           timeStamp: value.timeStamp,
@@ -96,7 +101,7 @@ class StockLogs extends React.Component {
               </CardHeader>
               <CardBody>
                 <ReactTable
-                  sorted={[{id: 'date', desc: true}]}
+                  sorted={[{id: 'timeStamp', desc: true}]}
                   data={this.data}
                   resizable={false}
                   columns={[
@@ -110,11 +115,11 @@ class StockLogs extends React.Component {
                     },
                     {
                       Header: 'TEDARİKÇİ',
-                      accessor: 'supplier.name',
+                      accessor: 'supplierName',
                     },
                     {
                       Header: 'MARKA',
-                      accessor: 'brand.name',
+                      accessor: 'brandName',
                     },
                     {
                       Header: 'MÜŞTERİ',
@@ -131,6 +136,11 @@ class StockLogs extends React.Component {
                     {
                       Header: 'TARİH',
                       accessor: 'date',
+                    },
+                    {
+                      Header: 'time',
+                      accessor: 'timeStamp',
+                      show: false,
                     },
                     {
                       Header: ' ',

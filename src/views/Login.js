@@ -85,7 +85,7 @@ class LoginPage extends React.Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder="Email"
+                        placeholder="Kullanıcı Adı"
                         type="username"
                         name="username"
                         onChange={this.handleChange}
@@ -93,7 +93,7 @@ class LoginPage extends React.Component {
                     </InputGroup>
                     {submitted && !username && (
                       <label className="error" style={{color: 'red'}}>
-                        Email zorunludur.
+                        Kullanıcı Adı zorunludur.
                       </label>
                     )}
                     <InputGroup>

@@ -237,6 +237,9 @@ class BoxedProductsPage extends React.Component {
         if (stock !== product.stock) {
           await stockUpdate({
             productId: product.id,
+            productName: product.name,
+            supplierName: product.supplierName,
+            brandName: product.brandName,
             type: action,
             oldStock: product.stock,
             newStock: stock,

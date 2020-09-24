@@ -44,7 +44,7 @@ class UsersPage extends React.Component {
           id: value.id,
           name: value.name,
           surname: value.surname,
-          email: value.email,
+          userName: value.userName,
           actions: (
             <div className="actions-right">
               {/* use this button to add a edit kind of action */}
@@ -180,14 +180,14 @@ class UsersPage extends React.Component {
                 defaultValue: user.surname,
               },
               {
-                label: 'Email*',
-                name: 'email',
-                type: 'email',
-                placeholder: 'Email',
+                label: 'Kullanıcı Adı*',
+                name: 'userName',
+                type: 'input',
+                placeholder: 'Kullanıcı Adı',
                 rules: {
                   required: true,
                 },
-                defaultValue: user.email,
+                defaultValue: user.userName,
               },
               {
                 label: 'Şifre*',
@@ -256,10 +256,10 @@ class UsersPage extends React.Component {
                 defaultValue: '',
               },
               {
-                label: 'Email*',
-                name: 'email',
-                type: 'email',
-                placeholder: 'Email',
+                label: 'Kullanıcı Adı*',
+                name: 'userName',
+                type: 'input',
+                placeholder: 'Kullanıcı Adı',
                 rules: {
                   required: true,
                 },
@@ -361,8 +361,8 @@ class UsersPage extends React.Component {
                       accessor: 'surname',
                     },
                     {
-                      Header: 'Email',
-                      accessor: 'email',
+                      Header: 'KULLANICI ADI',
+                      accessor: 'userName',
                     },
                     {
                       Header: 'İşlemler',
