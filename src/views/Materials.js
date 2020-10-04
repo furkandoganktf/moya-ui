@@ -56,6 +56,7 @@ class MaterialsPage extends React.Component {
             supplier: this.suppliers.find(o => o.id === value.supplier),
             stock: value.stock,
             country: value.country,
+            threshold: value.threshold,
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
@@ -173,7 +174,7 @@ class MaterialsPage extends React.Component {
             supplierName: product.supplierName,
             brandName: product.brandName,
             type: action,
-            productType:"material",
+            productType: 'material',
             oldStock: product.stock,
             newStock: stock,
             customer: data.customer?.value,
@@ -291,6 +292,17 @@ class MaterialsPage extends React.Component {
               },
               defaultValue: product.country,
             },
+            {
+              label: 'Email Sınırı*',
+              name: 'threshold',
+              type: 'number',
+              placeholder: 'Email Sınırı',
+              rules: {
+                required: true,
+                min: 0,
+              },
+              defaultValue: product.threshold,
+            },
           ];
     this.setState({
       alert: (
@@ -371,6 +383,17 @@ class MaterialsPage extends React.Component {
                   required: false,
                 },
                 defaultValue: '',
+              },
+              {
+                label: 'Email Sınırı*',
+                name: 'threshold',
+                type: 'number',
+                placeholder: 'Email Sınırı',
+                rules: {
+                  required: true,
+                  min: 0,
+                },
+                defaultValue: 0,
               },
             ]}
             onCancel={this.hideAlert}

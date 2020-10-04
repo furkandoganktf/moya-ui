@@ -55,6 +55,7 @@ class PackagesPage extends React.Component {
             name: value.name,
             supplier: this.suppliers.find(o => o.id === value.supplier),
             stock: value.stock,
+            threshold: value.threshold,
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
@@ -172,7 +173,7 @@ class PackagesPage extends React.Component {
             supplierName: product.supplierName,
             brandName: product.brandName,
             type: action,
-            productType:"package",
+            productType: 'package',
             oldStock: product.stock,
             newStock: stock,
             customer: data.customer?.value,
@@ -280,6 +281,17 @@ class PackagesPage extends React.Component {
               },
               defaultValue: product.stock,
             },
+            {
+              label: 'Email Sınırı*',
+              name: 'threshold',
+              type: 'number',
+              placeholder: 'Email Sınırı',
+              rules: {
+                required: true,
+                min: 0,
+              },
+              defaultValue: product.threshold,
+            },
           ];
     this.setState({
       alert: (
@@ -345,6 +357,17 @@ class PackagesPage extends React.Component {
                 name: 'stock',
                 type: 'number',
                 placeholder: 'Stok',
+                rules: {
+                  required: true,
+                  min: 0,
+                },
+                defaultValue: 0,
+              },
+              {
+                label: 'Email Sınırı*',
+                name: 'threshold',
+                type: 'number',
+                placeholder: 'Email Sınırı',
                 rules: {
                   required: true,
                   min: 0,

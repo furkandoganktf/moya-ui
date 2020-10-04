@@ -72,6 +72,7 @@ class BoxedProductsPage extends React.Component {
             materialCount: value.materialCount,
             packageCount: value.packageCount,
             content: value.content,
+            threshold: value.threshold,
             actions: (
               <div className="actions-right">
                 {/* use this button to add a edit kind of action */}
@@ -173,6 +174,7 @@ class BoxedProductsPage extends React.Component {
       stock: parseInt(data.stock),
       materialCount: parseInt(data.materialCount),
       packageCount: parseInt(data.packageCount),
+      threshold: data.threshold,
       content: content,
     };
     await this.props.addProduct({...boxed_product, type: 'box'});
@@ -220,6 +222,7 @@ class BoxedProductsPage extends React.Component {
         materialCount: parseInt(data.materialCount),
         packageCount: parseInt(data.packageCount),
         content: content,
+        threshold: data.threshold,
       };
       const newProduct =
         action === 'update'
@@ -241,7 +244,7 @@ class BoxedProductsPage extends React.Component {
             supplierName: product.supplierName,
             brandName: product.brandName,
             type: action,
-            productType:"box",
+            productType: 'box',
             oldStock: product.stock,
             newStock: stock,
             customer: data.customer?.value,
@@ -427,6 +430,17 @@ class BoxedProductsPage extends React.Component {
               },
               defaultValue: product.stock,
             },
+            {
+              label: 'Email Sınırı*',
+              name: 'threshold',
+              type: 'number',
+              placeholder: 'Email Sınırı',
+              rules: {
+                required: true,
+                min: 0,
+              },
+              defaultValue: product.threshold,
+            },
           ];
     this.setState({
       alert: (
@@ -539,6 +553,17 @@ class BoxedProductsPage extends React.Component {
                   min: 0,
                 },
                 defaultValue: '',
+              },
+              {
+                label: 'Email Sınırı*',
+                name: 'threshold',
+                type: 'number',
+                placeholder: 'Email Sınırı',
+                rules: {
+                  required: true,
+                  min: 0,
+                },
+                defaultValue: 0,
               },
             ]}
             onCancel={this.hideAlert}
