@@ -19,6 +19,8 @@ import {
 } from 'reactstrap';
 import CustomForm from 'components/CustomForm';
 import {productActions, supplierActions} from 'actions';
+import {stockUpdate} from 'services/productService';
+
 class MaterialsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -163,6 +165,21 @@ class MaterialsPage extends React.Component {
         : {...oldProduct, supplier: supplier, stock: stock};
     await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
+      if (action === 'add' || action === 'substract') {
+        if (stock !== product.stock) {
+          await stockUpdate({
+            productId: product.id,
+            productName: product.name,
+            supplierName: product.supplierName,
+            brandName: product.brandName,
+            type: action,
+            productType:"material",
+            oldStock: product.stock,
+            newStock: stock,
+            customer: data.customer?.value,
+          });
+        }
+      }
       this.notify(this.props.alert.message, 'success');
       await this.props.getAll();
       this.setState({dataLoaded: false});

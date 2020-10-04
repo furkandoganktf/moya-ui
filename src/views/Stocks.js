@@ -2,11 +2,21 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ReactTable from 'react-table';
 import NotificationAlert from 'react-notification-alert';
+import ReactBSAlert from 'react-bootstrap-sweetalert';
 import BlockUi from 'react-block-ui';
 import {Loader} from 'react-loaders';
 import 'react-block-ui/style.css';
 import 'loaders.css/loaders.min.css';
-import {Card, CardBody, CardHeader, CardTitle, Col, Row} from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Col,
+  Row,
+} from 'reactstrap';
 import {getStockLogs} from 'services/userService';
 import {
   productActions,
@@ -14,6 +24,7 @@ import {
   brandActions,
   customerActions,
 } from 'actions';
+import Select from 'react-select';
 
 class StockLogs extends React.Component {
   constructor(props) {
@@ -22,12 +33,31 @@ class StockLogs extends React.Component {
     this.products = [];
     this.suppliers = [];
     this.customers = [];
+    this.startYear = 2020;
+    this.currentYear = new Date().getFullYear();
+    this.yearOptions = [
+      ...Array(this.currentYear - this.startYear + 1).keys(),
+    ].map(i => i + this.startYear);
+    this.monthOptions = Array.from({length: 12}, (e, i) => {
+      return new Date(null, i + 1, null).toLocaleDateString('tr', {
+        month: 'long',
+      });
+    });
+    this.typeOptions = [
+      {value: 'box', label: 'Kutulu Ürün'},
+      {value: 'material', label: 'Hammadde'},
+      {value: 'package', label: 'Ambalaj'},
+    ];
     this.state = {
       alert: null,
       dataLoaded: false,
       loaderType: 'ball-triangle-path',
       message: 'Loading, please wait',
+      selectedYear: null,
+      selectedMonth: null,
+      selectedType: null,
     };
+    this.notificationAlertRef = React.createRef();
   }
 
   componentDidMount = async () => {
@@ -37,6 +67,178 @@ class StockLogs extends React.Component {
     await this.props.getBrands();
     await this.props.getCustomers();
     await this.props.getProducts();
+  };
+
+  hideAlert = () => {
+    this.setState({
+      alert: null,
+    });
+  };
+
+  onYearSelect = value => {
+    this.setState({selectedYear: value});
+  };
+
+  onMonthSelect = value => {
+    this.setState({selectedMonth: value});
+  };
+
+  onTypeSelect = value => {
+    console.log(value);
+    this.setState({selectedType: value});
+  };
+
+  createReport = () => {
+    if (
+      this.state.selectedMonth &&
+      this.state.selectedYear &&
+      this.state.selectedType
+    ) {
+      let startDate = new Date(
+        this.state.selectedYear.value,
+        this.state.selectedMonth.value,
+      ).getTime();
+      let endDate;
+      if (this.state.selectedMonth.value == 11) {
+        endDate = new Date(this.state.selectedYear.value + 1, 0).getTime();
+      } else {
+        endDate = new Date(
+          this.state.selectedYear.value,
+          this.state.selectedMonth.value + 1,
+        ).getTime();
+      }
+      let reportData = this.data.filter(
+        e =>
+          e.timeStamp >= startDate &&
+          e.timeStamp <= endDate &&
+          e.productType === this.state.selectedType.label,
+      );
+      reportData.sort((a, b) =>
+        a.timeStamp > b.timeStamp ? 1 : b.timeStamp > a.timeStamp ? -1 : 0,
+      );
+      reportData = reportData.map(e => {
+        return [
+          e.type,
+          e.name,
+          e.customer?.name,
+          e.brandName,
+          e.supplierName,
+          e.oldStock,
+          e.newStock,
+          e.date,
+        ];
+      });
+      reportData.splice(0, 0, [
+        'Tür',
+        'Ürün Adı',
+        'Müşteri Adı',
+        'Marka',
+        'Tedarikçi',
+        'Eski Stok',
+        'Yeni Stok',
+        'Tarih',
+      ]);
+      var downloadLink = document.createElement('a');
+      let csvContent = reportData.map(e => e.join(',')).join('\n');
+      let blob = new Blob([csvContent], {type: 'text/csv'});
+      var url = URL.createObjectURL(blob);
+      downloadLink.href = url;
+      downloadLink.download = 'data.csv';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      this.hideAlert();
+    } else {
+      this.notify('En az bir seçim yapmak zorundasınız.', 'danger');
+    }
+  };
+
+  createReportForm = () => {
+    const customStyles = {
+      menu: (provided, state) => ({
+        ...provided,
+        height: '200px',
+      }),
+      menuList: (provided, state) => ({
+        ...provided,
+        height: '200px',
+      }),
+    };
+    this.setState({
+      alert: (
+        <ReactBSAlert
+          style={{backgroundColor: 'transparent'}}
+          onCancel={this.hideAlert}
+          showConfirm={false}
+          cancelBtnText="İptal"
+          confirmBtnBsStyle="linkedin"
+          cancelBtnBsStyle="danger"
+          onConfirm={() => {}}
+          title=""
+          confirmBtnText="Oluştur"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h3">Rapor Oluştur</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <Select
+                placeholder="Yıl"
+                onChange={value => this.onYearSelect(value)}
+                options={this.yearOptions.map(e => {
+                  return {label: e, value: e};
+                })}
+              />
+              <br />
+              <Select
+                placeholder="Ay"
+                onChange={value => this.onMonthSelect(value)}
+                styles={customStyles}
+                options={this.monthOptions.map((e, index) => {
+                  return {value: index, label: e};
+                })}
+                name="MonthSelection"
+              />
+              <br />
+              <Select
+                placeholder="Ürün Türü"
+                onChange={value => this.onTypeSelect(value)}
+                options={this.typeOptions}
+              />
+            </CardBody>
+            <CardFooter className="text-right">
+              <Button
+                color="danger"
+                style={{float: 'left'}}
+                onClick={this.hideAlert}
+              >
+                İptal
+              </Button>
+              <Button color="success" onClick={this.createReport}>
+                Oluştur
+              </Button>
+            </CardFooter>
+          </Card>
+        </ReactBSAlert>
+      ),
+    });
+  };
+
+  notify = (e, notType) => {
+    var type = notType;
+    var options = {};
+    options = {
+      place: 'tr',
+      message: (
+        <div>
+          <div>{e}</div>
+        </div>
+      ),
+      type: type,
+      icon: 'tim-icons icon-alert-circle-exc',
+      autoDismiss: 5,
+    };
+    this.notificationAlertRef.current.notificationAlert(options);
   };
 
   componentDidUpdate() {
@@ -67,7 +269,8 @@ class StockLogs extends React.Component {
           supplier: supplier,
           supplierName: supplier?.name ? supplier.name : value.supplierName,
           name: product?.name ? product.name : value.productName,
-          type: value.type,
+          type: value?.type,
+          productType: value?.productType,
           date: value.date,
           timeStamp: value.timeStamp,
         };
@@ -98,16 +301,26 @@ class StockLogs extends React.Component {
                 <CardTitle tag="h1" style={{textAlign: 'center'}}>
                   Stok Giriş/Çıkış
                 </CardTitle>
+                <Button
+                  className="float-right"
+                  color="success"
+                  onClick={this.createReportForm}
+                >
+                  Rapor Oluştur
+                </Button>
               </CardHeader>
               <CardBody>
                 <ReactTable
-                  sorted={[{id: 'timeStamp', desc: true}]}
+                  defaultSorted={[{id: 'timeStamp', desc: true}]}
                   data={this.data}
-                  resizable={false}
                   columns={[
                     {
                       Header: 'TÜR',
                       accessor: 'type',
+                    },
+                    {
+                      Header: 'ÜRÜN TÜRÜ',
+                      accessor: 'productType',
                     },
                     {
                       Header: 'ÜRÜN ADI',

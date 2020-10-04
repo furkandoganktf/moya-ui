@@ -35172,7 +35172,7 @@ fieldset[disabled] .ReactTable .-pagination .-btn.active {
 }
 
 .rna-container {
-  z-index: 1051;
+  z-index: 9999999;
   position: fixed;
 }
 

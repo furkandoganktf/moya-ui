@@ -241,6 +241,7 @@ class BoxedProductsPage extends React.Component {
             supplierName: product.supplierName,
             brandName: product.brandName,
             type: action,
+            productType:"box",
             oldStock: product.stock,
             newStock: stock,
             customer: data.customer?.value,
