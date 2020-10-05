@@ -99,7 +99,7 @@ class StockLogs extends React.Component {
         this.state.selectedMonth.value,
       ).getTime();
       let endDate;
-      if (this.state.selectedMonth.value == 11) {
+      if (this.state.selectedMonth.value === 11) {
         endDate = new Date(this.state.selectedYear.value + 1, 0).getTime();
       } else {
         endDate = new Date(
