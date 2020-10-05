@@ -1,5 +1,5 @@
 let localhost = 'localhost:3000';
-let localurl = '18.221.90.182:3000';
+let localurl = '3.12.220.9:3000';
 let currenturl = '';
 let currentSetting = 1;
 
