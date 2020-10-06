@@ -179,7 +179,9 @@ class StockLogs extends React.Component {
         >
           <Card>
             <CardHeader>
-              <CardTitle tag="h3">Rapor Oluştur</CardTitle>
+              <CardTitle tag="h1" style={{fontWeight: 'bold'}}>
+                Rapor Oluştur
+              </CardTitle>
             </CardHeader>
             <CardBody>
               <Select
@@ -209,12 +211,16 @@ class StockLogs extends React.Component {
             <CardFooter className="text-right">
               <Button
                 color="danger"
-                style={{float: 'left'}}
+                style={{float: 'left', fontSize: '1rem', fontWeight: 'bold'}}
                 onClick={this.hideAlert}
               >
                 İptal
               </Button>
-              <Button color="success" onClick={this.createReport}>
+              <Button
+                color="success"
+                onClick={this.createReport}
+                style={{fontSize: '1rem', fontWeight: 'bold'}}
+              >
                 Oluştur
               </Button>
             </CardFooter>
@@ -298,13 +304,17 @@ class StockLogs extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center'}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Stok Giriş/Çıkış
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
                   onClick={this.createReportForm}
+                  style={{fontSize: '1rem', fontWeight: 'bold'}}
                 >
                   Rapor Oluştur
                 </Button>

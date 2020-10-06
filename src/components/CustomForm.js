@@ -51,7 +51,14 @@ export default function CustomForm(props) {
             }}
           >
             <label
-              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                textAlign: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
             >
               {'Hammadde ' + (i + 1)}
             </label>
@@ -72,7 +79,15 @@ export default function CustomForm(props) {
                 : ''
             }`}
           >
-            <label style={{marginBottom: '5px', float: 'left'}}>
+            <label
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
+            >
               {'Hammadde ' + (i + 1) + ' Miktarı'}
             </label>
             <Controller
@@ -102,7 +117,14 @@ export default function CustomForm(props) {
             }}
           >
             <label
-              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                textAlign: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
             >
               {'Hammadde ' + (i + 1)}
             </label>
@@ -123,7 +145,15 @@ export default function CustomForm(props) {
                 : ''
             }`}
           >
-            <label style={{marginBottom: '5px', float: 'left'}}>
+            <label
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
+            >
               {'Hammadde ' + (i + 1) + ' Miktarı'}
             </label>
             <Controller
@@ -164,7 +194,14 @@ export default function CustomForm(props) {
             }}
           >
             <label
-              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                textAlign: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
             >
               {'Ambalaj ' + (i + 1)}
             </label>
@@ -185,7 +222,15 @@ export default function CustomForm(props) {
                 : ''
             }`}
           >
-            <label style={{marginBottom: '5px', float: 'left'}}>
+            <label
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
+            >
               {'Ambalaj ' + (i + 1) + ' Miktarı'}
             </label>
             <Controller
@@ -215,7 +260,14 @@ export default function CustomForm(props) {
             }}
           >
             <label
-              style={{marginBottom: '5px', float: 'left', textAlign: 'left'}}
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                textAlign: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
             >
               {'Ambalaj ' + (i + 1)}
             </label>
@@ -236,7 +288,15 @@ export default function CustomForm(props) {
                 : ''
             }`}
           >
-            <label style={{marginBottom: '5px', float: 'left'}}>
+            <label
+              style={{
+                marginBottom: '5px',
+                float: 'left',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'white',
+              }}
+            >
               {'Ambalaj ' + (i + 1) + ' Miktarı'}
             </label>
             <Controller
@@ -285,7 +345,9 @@ export default function CustomForm(props) {
     <Form id="Validation">
       <Card>
         <CardHeader>
-          <CardTitle tag="h3">{props.name}</CardTitle>
+          <CardTitle tag="h1" style={{fontWeight: 'bold'}}>
+            {props.name}
+          </CardTitle>
         </CardHeader>
         <CardBody>
           {props.forms.map((form, index) => {
@@ -322,6 +384,8 @@ export default function CustomForm(props) {
                       marginBottom: '5px',
                       float: 'left',
                       textAlign: 'left',
+                      fontSize: '1rem',
+                      fontWeight: 'bold',
                     }}
                   >
                     {form.label}
@@ -354,7 +418,15 @@ export default function CustomForm(props) {
                     _.get(`${form.name}.type`, errors) ? 'has-danger' : ''
                   }`}
                 >
-                  <label style={{marginBottom: '5px', float: 'left'}}>
+                  <label
+                    style={{
+                      marginBottom: '5px',
+                      float: 'left',
+                      fontSize: '1rem',
+                      fontWeight: 'bold',
+                      color: 'white',
+                    }}
+                  >
                     {form.label}
                   </label>
                   <Controller
@@ -375,14 +447,17 @@ export default function CustomForm(props) {
             );
           })}
 
-          <div className="category form-category" style={{float: 'left'}}>
+          <div
+            className="category form-category"
+            style={{float: 'left', fontSize: '0.75rem', fontWeight: 'bold'}}
+          >
             * Zorunlu alanlar
           </div>
         </CardBody>
         <CardFooter className="text-right">
           <Button
             color="danger"
-            style={{float: 'left'}}
+            style={{float: 'left', fontSize: '1rem', fontWeight: 'bold'}}
             onClick={props.onCancel}
           >
             İptal
@@ -390,6 +465,7 @@ export default function CustomForm(props) {
           <Button
             color="success"
             onClick={handleSubmit(props.onSubmit, props.onError)}
+            style={{fontSize: '1rem', fontWeight: 'bold'}}
           >
             {props.submitText}
           </Button>

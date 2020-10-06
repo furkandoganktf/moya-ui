@@ -1,7 +1,7 @@
 let localhost = 'localhost:3000';
 let localurl = '3.12.220.9:3000';
 let currenturl = '';
-let currentSetting = 1;
+let currentSetting = 0;
 
 if (currentSetting === 1) currenturl = localurl;
 else currenturl = localhost;

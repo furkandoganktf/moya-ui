@@ -292,13 +292,14 @@ class BrandsPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center'}}>
+                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
                   Markalar
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
                   onClick={this.addBrandAlert}
+                  style={{fontSize: '1rem', fontWeight: 'bold'}}
                 >
                   Yeni Marka Ekle
                 </Button>

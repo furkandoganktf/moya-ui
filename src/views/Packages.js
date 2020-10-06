@@ -422,13 +422,14 @@ class PackagesPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center'}}>
+                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
                   Ambalajlar
                 </CardTitle>
-                <Button
+                 <Button
                   className="float-right"
                   color="success"
                   onClick={this.addProductAlert}
+                  style={{fontSize: '1rem', fontWeight: 'bold'}}
                 >
                   Yeni Ürün Ekle
                 </Button>

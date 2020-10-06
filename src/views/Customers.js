@@ -388,13 +388,14 @@ class CustomersPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center'}}>
+                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
                   Müşteriler
                 </CardTitle>
                 <Button
                   className="float-right"
                   color="success"
                   onClick={this.addCustomerAlert}
+                  style={{fontSize: '1rem', fontWeight: 'bold'}}
                 >
                   Yeni Müşteri Ekle
                 </Button>
@@ -406,7 +407,7 @@ class CustomersPage extends React.Component {
                   resizable={false}
                   columns={[
                     {
-                      Header: 'Firma Adı',
+                      Header: 'FİRMA ADI',
                       accessor: 'companyName',
                     },
                     {
@@ -418,11 +419,11 @@ class CustomersPage extends React.Component {
                       accessor: 'surname',
                     },
                     {
-                      Header: 'İl',
+                      Header: 'İL',
                       accessor: 'province',
                     },
                     {
-                      Header: 'İlçe',
+                      Header: 'İLÇE',
                       accessor: 'district',
                     },
                     {

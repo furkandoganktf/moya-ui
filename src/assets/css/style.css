@@ -57,7 +57,7 @@
 .react-select__option--is-selected {
   background-color: rgba(30, 30, 47, 1) !important;
 }
- 
+
 .rdrCalendarWrapper {
   background-color: transparent !important;
 }
@@ -228,4 +228,15 @@ div[data-tour-elem='controls'] {
 
 .navbar {
   width: 5% !important;
+}
+
+.rt-th,
+.rt-tr {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.rt-td{
+  font-size: 0.75rem;
+  font-weight: bold;
 }

@@ -67,17 +67,23 @@ class Sidebar extends React.Component {
               {prop.icon !== undefined ? (
                 <>
                   <i className={prop.icon} />
-                  <p style={{fontSize: '0.750rem', fontWeight: 'bold'}}>
+                  <p style={{fontSize: '1rem', fontWeight: 'bold'}}>
                     {rtlActive ? prop.rtlName : prop.name}
                     <b className="caret" />
                   </p>
                 </>
               ) : (
                 <>
-                  <span className="sidebar-mini-icon">
+                  <span
+                    className="sidebar-mini-icon"
+                    style={{fontSize: '0.75rem', fontWeight: 'bold'}}
+                  >
                     {rtlActive ? prop.rtlMini : prop.mini}
                   </span>
-                  <span className="sidebar-normal">
+                  <span
+                    className="sidebar-normal"
+                    style={{fontSize: '0.75rem', fontWeight: 'bold'}}
+                  >
                     {rtlActive ? prop.rtlName : prop.name}
                     <b className="caret" />
                   </span>
@@ -102,16 +108,22 @@ class Sidebar extends React.Component {
             {prop.icon !== undefined ? (
               <>
                 <i className={prop.icon} style={{lineHeight: '30px'}} />
-                <p style={{fontSize: '0.750rem', fontWeight: 'bold'}}>
+                <p style={{fontSize: '1rem', fontWeight: 'bold'}}>
                   {rtlActive ? prop.rtlName : prop.name}
                 </p>
               </>
             ) : (
               <>
-                <span className="sidebar-mini-icon">
+                <span
+                  className="sidebar-mini-icon"
+                  style={{fontSize: '0.75rem', fontWeight: 'bold'}}
+                >
                   {rtlActive ? prop.rtlMini : prop.mini}
                 </span>
-                <span className="sidebar-normal">
+                <span
+                  className="sidebar-normal"
+                  style={{fontSize: '0.75rem', fontWeight: 'bold'}}
+                >
                   {rtlActive ? prop.rtlName : prop.name}
                 </span>
               </>
