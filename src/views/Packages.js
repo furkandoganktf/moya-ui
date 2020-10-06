@@ -162,7 +162,7 @@ class PackagesPage extends React.Component {
             supplier: supplier,
             type: 'package',
           }
-        : {...oldProduct, supplier: supplier, stock: parseInt(data.stock)};
+        : {...oldProduct, supplier: supplier, stock: stock};
     await this.props.updateProduct(newProduct);
     if (this.props.alert.type === 'alert-success') {
       if (action === 'add' || action === 'substract') {
