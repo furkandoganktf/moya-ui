@@ -362,6 +362,10 @@ export default function CustomForm(props) {
                   .map((value, key) => {
                     return {key: key, label: value.name, value: value.id};
                   });
+              } else if (props.spec === 'box' && form.name === 'customer') {
+                options = form.data.map((value, key) => {
+                  return {key: key, label: value.companyName, value: value.id};
+                });
               } else {
                 options = form.data.map((value, key) => {
                   return {key: key, label: value.name, value: value.id};
