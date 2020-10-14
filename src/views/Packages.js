@@ -66,9 +66,7 @@ class PackagesPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-add" />
                 </Button>{' '}
@@ -79,9 +77,7 @@ class PackagesPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-delete" />
                 </Button>{' '}
@@ -92,9 +88,7 @@ class PackagesPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-pencil" />
                 </Button>{' '}
@@ -105,9 +99,7 @@ class PackagesPage extends React.Component {
                   }}
                   color="danger"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-remove" />
                 </Button>{' '}
@@ -459,6 +451,25 @@ class PackagesPage extends React.Component {
                       filterable: false,
                     },
                   ]}
+                  getTrProps={(state, rowInfo, column) => {
+                    if (rowInfo) {
+                      console.log(rowInfo.row)
+                      return {
+                        style: {
+                          background:
+                            rowInfo.row._original.threshold > rowInfo.row._original.stock
+                              ? 'rgba(255,0,0,0.3)'
+                              : 'transparent',
+                        },
+                      };
+                    } else {
+                      return {
+                        style: {
+                          background: 'transparent',
+                        },
+                      };
+                    }
+                  }}
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}

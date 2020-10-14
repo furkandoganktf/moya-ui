@@ -83,9 +83,7 @@ class BoxedProductsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-app" />
                 </Button>{' '}
@@ -96,9 +94,7 @@ class BoxedProductsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-add" />
                 </Button>{' '}
@@ -109,9 +105,7 @@ class BoxedProductsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-delete" />
                 </Button>{' '}
@@ -122,9 +116,7 @@ class BoxedProductsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-pencil" />
                 </Button>{' '}
@@ -136,9 +128,7 @@ class BoxedProductsPage extends React.Component {
                   }}
                   color="danger"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-remove" />
                 </Button>{' '}
@@ -613,7 +603,10 @@ class BoxedProductsPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Kutulu Ürünler
                 </CardTitle>
                 <Button
@@ -654,6 +647,25 @@ class BoxedProductsPage extends React.Component {
                       filterable: false,
                     },
                   ]}
+                  getTrProps={(state, rowInfo, column) => {
+                    if (rowInfo) {
+                      console.log(rowInfo.row)
+                      return {
+                        style: {
+                          background:
+                            rowInfo.row._original.threshold > rowInfo.row._original.stock
+                              ? 'rgba(255,0,0,0.3)'
+                              : 'transparent',
+                        },
+                      };
+                    } else {
+                      return {
+                        style: {
+                          background: 'transparent',
+                        },
+                      };
+                    }
+                  }}
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}

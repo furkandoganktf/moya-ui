@@ -67,9 +67,7 @@ class MaterialsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-add" />
                 </Button>{' '}
@@ -80,9 +78,7 @@ class MaterialsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-delete" />
                 </Button>{' '}
@@ -93,9 +89,7 @@ class MaterialsPage extends React.Component {
                   }}
                   color="warning"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-pencil" />
                 </Button>{' '}
@@ -106,9 +100,7 @@ class MaterialsPage extends React.Component {
                   }}
                   color="danger"
                   size="sm"
-                  className={classNames('btn-icon btn-link like', {
-                    'btn-neutral': key < 5,
-                  })}
+                  className={classNames('btn-icon btn-link like btn-neutral')}
                 >
                   <i className="tim-icons icon-simple-remove" />
                 </Button>{' '}

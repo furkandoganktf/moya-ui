@@ -346,7 +346,7 @@ class StockLogs extends React.Component {
                     },
                     {
                       Header: 'MÜŞTERİ',
-                      accessor: 'customer.name',
+                      accessor: 'customer.companyName',
                     },
                     {
                       Header: 'ESKİ STOK',
@@ -371,6 +371,25 @@ class StockLogs extends React.Component {
                       width: 0,
                     },
                   ]}
+                  getTrProps={(state, rowInfo, column) => {
+                    if (rowInfo) {
+                      console.log(rowInfo.row)
+                      return {
+                        style: {
+                          background:
+                            rowInfo.row._original.threshold > rowInfo.row._original.stock
+                              ? 'rgba(255,0,0,0.3)'
+                              : 'transparent',
+                        },
+                      };
+                    } else {
+                      return {
+                        style: {
+                          background: 'transparent',
+                        },
+                      };
+                    }
+                  }}
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
