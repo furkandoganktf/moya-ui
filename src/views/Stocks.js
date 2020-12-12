@@ -375,6 +375,7 @@ class StockLogs extends React.Component {
                   showPaginationBottom={false}
                   filterable={true}
                   defaultPageSize={10}
+                  minRows={0}
                   className="-striped -highlight"
                   loading={false}
                   nextText="İleri"
