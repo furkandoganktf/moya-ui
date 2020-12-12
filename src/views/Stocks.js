@@ -120,7 +120,7 @@ class StockLogs extends React.Component {
         return [
           e.type,
           e.name,
-          e.customer?.name,
+          e.customer?.companyName,
           e.brandName,
           e.supplierName,
           e.oldStock,
