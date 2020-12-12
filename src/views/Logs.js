@@ -71,9 +71,9 @@ class Logs extends React.Component {
                       accessor: 'date',
                     },
                     {
-                      Header: 'time',
+                      Header: 'T',
                       accessor: 'timeStamp',
-                      show: false,
+                      width: 50,
                     },
                     {
                       Header: ' ',
