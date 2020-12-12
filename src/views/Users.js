@@ -378,6 +378,7 @@ class UsersPage extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
+                  minRows={0}
                   defaultPageSize={7}
                   className="-striped -highlight"
                   loading={false}

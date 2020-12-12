@@ -172,7 +172,7 @@ class BrandsPage extends React.Component {
           <CustomForm
             name={'Marka Güncelleme'}
             submitText="Güncelle"
-            type = "update"
+            type="update"
             forms={[
               {
                 label: 'Marka adı*',
@@ -221,7 +221,7 @@ class BrandsPage extends React.Component {
           <CustomForm
             name={'Kayıt Formu'}
             submitText="Ekle"
-            type = "add"
+            type="add"
             forms={[
               {
                 label: 'Marka Adı*',
@@ -292,7 +292,10 @@ class BrandsPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Markalar
                 </CardTitle>
                 <Button
@@ -328,6 +331,7 @@ class BrandsPage extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
+                  minRows={0}
                   defaultPageSize={7}
                   className="-striped -highlight"
                   loading={false}

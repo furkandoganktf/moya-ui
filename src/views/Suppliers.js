@@ -33,7 +33,7 @@ class SuppliersPage extends React.Component {
     this.notificationAlertRef = React.createRef();
   }
 
-  componentDidMount =async () => {
+  componentDidMount = async () => {
     await this.props.getAll();
   };
 
@@ -90,7 +90,7 @@ class SuppliersPage extends React.Component {
 
   addSupplier = async data => {
     this.hideAlert();
-    console.log(data)
+    console.log(data);
     await this.props.addSupplier(data);
     if (this.props.alert.type === 'alert-success') {
       this.notify(this.props.alert.message, 'success');
@@ -271,7 +271,10 @@ class SuppliersPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Tedarikçiler
                 </CardTitle>
                 <Button
@@ -308,6 +311,7 @@ class SuppliersPage extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
+                  minRows={0}
                   defaultPageSize={7}
                   className="-striped -highlight"
                   loading={false}

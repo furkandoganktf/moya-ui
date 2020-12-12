@@ -45,7 +45,10 @@ class Logs extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Loglar
                 </CardTitle>
               </CardHeader>
@@ -81,6 +84,7 @@ class Logs extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
+                  minRows={0}
                   defaultPageSize={10}
                   className="-striped -highlight"
                   loading={false}

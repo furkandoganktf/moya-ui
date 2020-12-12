@@ -435,10 +435,13 @@ class MaterialsPage extends React.Component {
           <Col xs={12} md={12}>
             <Card style={{minHeight: '98vh', marginBottom: 0}}>
               <CardHeader>
-                <CardTitle tag="h1" style={{textAlign: 'center',fontWeight:"bolder"}}>
+                <CardTitle
+                  tag="h1"
+                  style={{textAlign: 'center', fontWeight: 'bolder'}}
+                >
                   Hammaddeler
                 </CardTitle>
-                 <Button
+                <Button
                   className="float-right"
                   color="success"
                   onClick={this.addProductAlert}
@@ -478,11 +481,12 @@ class MaterialsPage extends React.Component {
                   ]}
                   getTrProps={(state, rowInfo, column) => {
                     if (rowInfo) {
-                      console.log(rowInfo.row)
+                      console.log(rowInfo.row);
                       return {
                         style: {
                           background:
-                            rowInfo.row._original.threshold > rowInfo.row._original.stock
+                            rowInfo.row._original.threshold >
+                            rowInfo.row._original.stock
                               ? 'rgba(255,0,0,0.3)'
                               : 'transparent',
                         },
@@ -498,6 +502,7 @@ class MaterialsPage extends React.Component {
                   showPaginationTop
                   showPaginationBottom={false}
                   filterable={true}
+                  minRows={0}
                   defaultPageSize={7}
                   className="-striped -highlight"
                   loading={false}
